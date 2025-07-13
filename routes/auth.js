@@ -4,7 +4,7 @@ import passport from 'passport';
 import { Strategy as DiscordStrategy } from 'passport-discord';
 import dotenv from 'dotenv';
 
-import db from '../utils/db.js';
+import prisma from '../utils/db.js';
 import config from '../utils/config.js';
 import pteroApi from '../utils/pteroApi.js';
 import { getOrCreatePteroUser } from './pterodactyl/syncUsers.js';
@@ -28,7 +28,7 @@ passport.use(new DiscordStrategy({
     const email = profile.email;
     const username = profile.username;
 
-    let user = await db('users').where({ discord_id: discordId }).first();
+    let user = await prisma.user.findUnique({ where: { discord_id: discordId } });
 
     if (!user) {
       const pteroUser = await getOrCreatePteroUser(email, username, discordId);
@@ -36,16 +36,15 @@ passport.use(new DiscordStrategy({
       const userDetails = await pteroApi.get(`/users/${pteroUser.id}`);
       const isAdmin = userDetails.data?.attributes?.root_admin === true;
 
-      await db('users').insert({
-        discord_id: discordId,
-        discord_email: email,
-        ptero_id: pteroUser.id,
-        ptero_username: pteroUser.username,
-        is_admin: isAdmin ? 1 : 0,
-        created_at: db.fn.now()
+      user = await prisma.user.create({
+        data: {
+          discord_id: discordId,
+          discord_email: email,
+          ptero_id: pteroUser.id,
+          ptero_username: pteroUser.username,
+          is_admin: isAdmin,
+        }
       });
-
-      user = await db('users').where({ discord_id: discordId }).first();
     }
 
     console.log('🔁 Syncing all servers from Pterodactyl...');

@@ -1,5 +1,5 @@
 import express from 'express';
-import db from '../../utils/db.js';
+import prisma from '../../utils/db.js';
 
 const router = express.Router();
 
@@ -10,13 +10,14 @@ router.get('/', async (req, res) => {
 
   try {
     const discordId = req.user.discord.id;
-    const user = await db('users').where({ discord_id: discordId }).first();
+    const user = await prisma.user.findUnique({ where: { discord_id: discordId } });
 
     if (!user) return res.status(404).json({ error: 'User not found' });
 
-    const servers = await db('servers')
-      .where({ user_id: user.ptero_id })
-      .select('name', 'identifier', 'cpu', 'memory', 'disk', 'renewal_cost');
+    const servers = await prisma.server.findMany({
+      where: { user_id: user.ptero_id },
+      select: { name: true, identifier: true, cpu: true, memory: true, disk: true, renewal_cost: true },
+    });
 
     const spending = servers.reduce((sum, srv) => sum + (srv.renewal_cost || 0), 0);
 

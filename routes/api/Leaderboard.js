@@ -1,15 +1,16 @@
 import express from 'express';
-import db from '../../utils/db.js';
+import prisma from '../../utils/db.js';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const users = await db('users')
-      .whereNotNull('ptero_username') // Make sure the username is set
-      .orderBy('coins', 'desc')
-      .limit(10)
-      .select('ptero_username', 'coins'); // Use ptero_username
+    const users = await prisma.user.findMany({
+      where: { NOT: { ptero_username: null } },
+      orderBy: { coins: 'desc' },
+      take: 10,
+      select: { ptero_username: true, coins: true },
+    });
 
     res.json(users);
   } catch (err) {

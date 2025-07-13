@@ -2,7 +2,7 @@ import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import dotenv from 'dotenv';
-import db from './utils/db.js';
+import prisma from './utils/db.js';
 import config from './utils/config.js';
 
 import './routes/auth.js'; // Initializes passport strategy
@@ -57,7 +57,7 @@ app.get('/api/me', async (req, res) => {
   }
 
   try {
-    const user = await db('users').where({ discord_id: req.user.discord.id }).first();
+    const user = await prisma.user.findUnique({ where: { discord_id: req.user.discord.id } });
     if (!user) return res.status(404).json({ error: 'User not found' });
 
     res.json({
