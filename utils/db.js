@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import pkg from '@prisma/client';
+const { PrismaClient } = pkg;
 import './config.js'; // ensure DATABASE_URL is populated
 
 const prisma = new PrismaClient({
