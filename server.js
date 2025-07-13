@@ -2,6 +2,7 @@ import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import dotenv from 'dotenv';
+import { execSync } from 'child_process';
 import prisma from './utils/db.js';
 import config from './utils/config.js';
 
@@ -23,6 +24,13 @@ import { syncEggs } from './utils/syncEggs.js';
 import { syncLocations } from './utils/syncLocations.js';
 
 dotenv.config();
+
+// Automatically deploy Prisma schema on startup
+try {
+  execSync('npx prisma db push', { stdio: 'inherit' });
+} catch (err) {
+  console.error('❌ Prisma deploy failed:', err);
+}
 
 const app = express();
 app.use(express.json());

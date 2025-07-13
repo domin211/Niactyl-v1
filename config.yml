@@ -35,3 +35,10 @@ limits:
   maxPorts: 69
   maxBackups: 3
   maxDatabases: 3
+
+database:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: postgres
+  name: niactyl
