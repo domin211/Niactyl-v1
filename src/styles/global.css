@@ -1,0 +1,36 @@
+/* src/styles/global.css */
+:root {
+    --primary-color: #fc6b05;
+    --bg-dark: #0f0f0f;
+    --text-light: #ffffff;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Inter', sans-serif;
+  }
+  
+  button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  button:hover {
+    background-color: #e35f04;
+  }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

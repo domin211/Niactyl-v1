@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS Variables */
+:root {
+  --brand-color: #fc6b05;
+  --background-color: #0C0E14;
+  --surface-color: #14171F;
+  --text-primary: #F7F7F7;
+  --text-secondary: #AAAAAA;
+  --danger-color: #D20A0A;
+  --warning-color: #FF9900;
+  --muted-bg: #1b1b1b;
+
+  --font-family: 'Rubik', sans-serif;
+
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 32px;
+}
+
+/* Base Styles */
+body {
+  @apply text-white;
+  background-color: var(--background-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-color); /* #14171F */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Utility Classes */
+.text-muted {
+  color: var(--text-secondary);
+}
+
+.text-brand {
+  color: var(--brand-color);
+}
+
+.text-danger {
+  color: var(--danger-color);
+}
+
+/* Reusable Buttons */
+.btn {
+  @apply px-4 py-2 rounded-md text-sm font-medium transition;
+}
+
+.btn-brand {
+  background-color: var(--brand-color);
+  color: white;
+}
+
+.btn-brand:hover {
+  background-color: #e85f00;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #b30c0c;
+}
+
+.btn-muted {
+  background-color: #2e2e2e;
+  color: white;
+}
+
+.btn-muted:hover {
+  background-color: #3a3a3a;
+}

@@ -1,0 +1,37 @@
+discord:
+  clientId: "1221092853531414660"
+  clientSecret: "8zivFUfCMpvQQ0PWHw1tURSCeGJkvCFz"
+  callbackUrl: "http://localhost:3000/api/auth/discord/callback"
+
+pterodactyl:
+  panelUrl: "https://panel.firecone.eu"
+  adminApiKey: "ptla_OTgTmivmFmUapDTEDCxqp18OITg0EZhrKzZj31LT2WI"
+  allowedNestId: 5
+
+linkvertise:
+  id: 1147997
+  reward_coins: 50
+  cooldown_hours: 1
+
+linkpays:
+  token: "4a243fb6ebb3de8d2ac9b2f880459154fa8d376d"
+  reward_coins: 50
+  cooldown_hours: 24
+
+renewalHours: 24
+
+renewalPricing:
+  cpu: 1        # per core
+  memory: 0.5   # per MB
+  disk: 0.2     # per MB
+  port: 2       # per port
+  backup: 2     # per backup
+  database: 2   # per database
+
+limits:
+  maxCpu: 1000
+  maxMemory: 16384
+  maxDisk: 10240
+  maxPorts: 69
+  maxBackups: 3
+  maxDatabases: 3
