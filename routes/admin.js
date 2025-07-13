@@ -1,5 +1,5 @@
 import express from 'express';
-import db from '../utils/db.js';
+import prisma from '../utils/db.js';
 
 const router = express.Router();
 
@@ -14,11 +14,11 @@ router.post('/add-coins', async (req, res) => {
     return res.status(400).json({ error: 'Missing fields' });
   }
 
-  const user = await db('users').where({ discord_id }).first();
+  const user = await prisma.user.findUnique({ where: { discord_id } });
   if (!user) return res.status(404).json({ error: 'User not found' });
 
   const newCoins = user.coins + Number(coins);
-  await db('users').where({ discord_id }).update({ coins: newCoins });
+  await prisma.user.update({ where: { discord_id }, data: { coins: newCoins } });
 
   res.json({ success: true, newCoins });
 });

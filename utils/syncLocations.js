@@ -1,5 +1,5 @@
 import axios from 'axios';
-import db from './db.js';
+import prisma from './db.js';
 import config from './config.js';
 
 const api = axios.create({
@@ -21,8 +21,8 @@ export async function syncLocations() {
       name: loc.attributes.short || 'Unnamed',
     }));
 
-    await db('locations').del();
-    await db('locations').insert(locations);
+    await prisma.location.deleteMany();
+    await prisma.location.createMany({ data: locations });
     console.log(`✅ Synced ${locations.length} locations`);
   } catch (err) {
     console.error('❌ Failed to sync locations:', err.response?.data || err.message);

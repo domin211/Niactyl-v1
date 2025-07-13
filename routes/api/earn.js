@@ -11,7 +11,7 @@ import {
   rewardLinkpaysUser,
 } from '../../utils/linkpays.js';
 
-import db from '../../utils/db.js';
+import prisma from '../../utils/db.js';
 
 const router = express.Router();
 
@@ -47,7 +47,7 @@ router.get('/reward/linkvertise', async (req, res) => {
   const userId = req.user.discord.id;
   try {
     const coins = rewardLinkvertiseUser(userId);
-    await db('users').where({ discord_id: userId }).increment('coins', coins);
+    await prisma.user.update({ where: { discord_id: userId }, data: { coins: { increment: coins } } });
     res.redirect('/dashboard');
   } catch (err) {
     console.error('❌ Reward error:', err);
@@ -77,7 +77,7 @@ router.get('/reward/linkpays', async (req, res) => {
   const userId = req.user.discord.id;
   try {
     const coins = rewardLinkpaysUser(userId);
-    await db('users').where({ discord_id: userId }).increment('coins', coins);
+    await prisma.user.update({ where: { discord_id: userId }, data: { coins: { increment: coins } } });
     res.redirect('/dashboard');
   } catch (err) {
     console.error('❌ Reward error:', err);

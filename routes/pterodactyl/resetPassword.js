@@ -1,5 +1,5 @@
 import express from 'express';
-import db from '../../utils/db.js';
+import prisma from '../../utils/db.js';
 import pteroApi from '../../utils/pteroApi.js';
 
 const router = express.Router();
@@ -37,7 +37,7 @@ router.post('/reset-password', async (req, res) => {
   if (!req.isAuthenticated()) return res.status(401).json({ error: 'Not authenticated' });
 
   try {
-    const user = await db('users').where({ discord_id: req.user.discord.id }).first();
+    const user = await prisma.user.findUnique({ where: { discord_id: req.user.discord.id } });
     if (!user || !user.ptero_id) return res.status(404).json({ error: 'Pterodactyl user not found' });
 
     const newPassword = await resetUserPassword(user.ptero_id);

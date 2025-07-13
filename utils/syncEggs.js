@@ -1,5 +1,5 @@
 import axios from 'axios';
-import db from '../utils/db.js';
+import prisma from '../utils/db.js';
 import config from './config.js';
 
 const api = axios.create({
@@ -37,8 +37,8 @@ export async function syncEggs() {
       };
     });
 
-    await db('eggs').del();
-    await db('eggs').insert(eggs);
+    await prisma.egg.deleteMany();
+    await prisma.egg.createMany({ data: eggs });
     console.log(`✅ Synced ${eggs.length} eggs with environment variables`);
   } catch (err) {
     console.error('❌ Failed to sync eggs:', err.response?.data || err.message);

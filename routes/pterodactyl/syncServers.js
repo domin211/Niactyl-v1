@@ -1,4 +1,4 @@
-import db from '../../utils/db.js';
+import prisma from '../../utils/db.js';
 import pteroApi from '../../utils/pteroApi.js';
 
 export async function syncAllServers() {
@@ -39,8 +39,10 @@ export async function syncAllServers() {
       };
     });
 
-    await db('servers').del();
-    await db('servers').insert(inserts);
+    await prisma.server.deleteMany();
+    if (inserts.length) {
+      await prisma.server.createMany({ data: inserts });
+    }
 
     console.log(`✅ Synced ${inserts.length} servers to local DB`);
   } catch (err) {

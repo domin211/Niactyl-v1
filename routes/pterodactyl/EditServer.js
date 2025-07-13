@@ -1,5 +1,5 @@
 import express from 'express';
-import db from '../../utils/db.js';
+import prisma from '../../utils/db.js';
 import pteroApi from '../../utils/pteroApi.js';
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.patch('/:id', async (req, res) => {
       }
     });
 
-    await db('servers').where({ id: serverId }).update({ cpu, memory, disk });
+    await prisma.server.update({ where: { id: Number(serverId) }, data: { cpu, memory, disk } });
     res.json({ success: true });
   } catch (err) {
     console.error('❌ Failed to edit server:', err.response?.data || err.message);

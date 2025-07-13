@@ -2,7 +2,7 @@
 import axios from 'axios';
 import fs from 'fs';
 import YAML from 'yaml';
-import db from './db.js';
+import prisma from './db.js';
 
 const file = fs.readFileSync('./config.yml', 'utf8');
 const config = YAML.parse(file);
@@ -50,7 +50,7 @@ export async function syncUserServers(pteroUserId) {
 
     const userServers = allServers.filter(s => s.attributes.user === parseInt(pteroUserId));
 
-    await db('servers').where({ user_id: pteroUserId }).del();
+    await prisma.server.deleteMany({ where: { user_id: pteroUserId } });
 
     const inserts = userServers.map(s => {
       const a = s.attributes;
@@ -72,7 +72,7 @@ export async function syncUserServers(pteroUserId) {
     });
 
     if (inserts.length > 0) {
-      await db('servers').insert(inserts);
+      await prisma.server.createMany({ data: inserts });
     }
 
     console.log(`✅ Synced ${inserts.length} servers for user ${pteroUserId}`);
@@ -82,7 +82,7 @@ export async function syncUserServers(pteroUserId) {
 }
 
 export async function createServerOnPterodactyl({ name, user_id, egg_id, location_id, cpu, memory, disk, ports, databases, backups }) {
-  const egg = await db('eggs').where({ egg_id }).first();
+  const egg = await prisma.egg.findUnique({ where: { egg_id } });
   if (!egg) throw new Error('Egg not found');
 
   const environment = JSON.parse(egg.environment || '{}');

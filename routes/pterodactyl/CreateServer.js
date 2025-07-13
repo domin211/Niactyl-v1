@@ -1,5 +1,5 @@
 import express from 'express';
-import db from '../../utils/db.js';
+import prisma from '../../utils/db.js';
 import fs from 'fs';
 import YAML from 'yaml';
 import axios from 'axios';
@@ -21,8 +21,8 @@ const getPrice = (key) => parseFloat(config.renewalPricing?.[key] || 0);
 // ✅ GET /meta — send all needed info to CreateServer page
 router.get('/meta', async (req, res) => {
   try {
-    const eggs = await db('eggs').select('egg_id as id', 'name');
-    const locations = await db('locations').select('id', 'name');
+    const eggs = await prisma.egg.findMany({ select: { egg_id: true, name: true } });
+    const locations = await prisma.location.findMany({ select: { id: true, name: true } });
 
     const pricing = config.renewalPricing || {};
     const limits = config.serverLimits || {
@@ -39,7 +39,7 @@ router.get('/meta', async (req, res) => {
 });
 
 async function getEnvironmentVariables(egg_id) {
-  const egg = await db('eggs').where({ egg_id }).first();
+  const egg = await prisma.egg.findUnique({ where: { egg_id } });
   if (!egg) throw new Error('Invalid egg selected');
 
   let parsed;
@@ -59,7 +59,7 @@ router.post('/create', async (req, res) => {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const user = await db('users').where({ discord_id: req.user.discord.id }).first();
+  const user = await prisma.user.findUnique({ where: { discord_id: req.user.discord.id } });
   if (!user) return res.status(404).json({ error: 'User not found' });
 
   const {
@@ -124,9 +124,10 @@ router.post('/create', async (req, res) => {
     const response = await api.post('/servers', payload);
     const server = response.data.attributes;
 
-    await db('users').where({ id: user.id }).update({ coins: user.coins - cost });
+    await prisma.user.update({ where: { id: user.id }, data: { coins: user.coins - cost } });
 
-    await db('servers').insert({
+    await prisma.server.create({ data: {
+      id: server.id,
       uuid: server.uuid,
       identifier: server.identifier,
       name: server.name,
@@ -139,7 +140,7 @@ router.post('/create', async (req, res) => {
       user_id: user.id,
       expires_at: new Date(Date.now() + config.renewalHours * 3600000),
       renewal_cost: cost,
-    });
+    }});
 
     res.json({ success: true, server });
   } catch (err) {
