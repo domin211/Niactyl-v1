@@ -91,3 +91,10 @@ model TeamMember {
   @@unique([team_id, user_id])
   @@map("team_members")
 
+}
+
+model Blacklist {
+  id         Int     @id @default(autoincrement())
+  discord_id String? @unique
+  ip         String? @unique
+}
