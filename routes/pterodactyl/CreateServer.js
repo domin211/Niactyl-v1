@@ -58,6 +58,19 @@ router.post('/create', async (req, res) => {
   const user = await prisma.user.findUnique({ where: { discord_id: req.user.discord.id } });
   if (!user) return res.status(404).json({ error: 'User not found' });
 
+  const userServers = await prisma.server.count({ where: { user_id: user.id } });
+  if (config.limits?.maxServersPerUser && userServers >= config.limits.maxServersPerUser) {
+    return res.status(400).json({ error: 'User server limit reached' });
+  }
+
+  const membership = await prisma.teamMember.findFirst({ where: { user_id: user.id } });
+  if (membership && config.limits?.maxServersPerTeam) {
+    const teamCount = await prisma.server.count({ where: { team_id: membership.team_id } });
+    if (teamCount >= config.limits.maxServersPerTeam) {
+      return res.status(400).json({ error: 'Team server limit reached' });
+    }
+  }
+
   const {
     name,
     plan: planName,
@@ -136,6 +149,7 @@ router.post('/create', async (req, res) => {
       databases,
       backups,
       user_id: user.id,
+      team_id: membership?.team_id || null,
       plan: finalPlanName,
       expires_at: new Date(Date.now() + config.renewalHours * 3600000),
       renewal_cost: planToUse.price,

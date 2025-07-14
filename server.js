@@ -17,6 +17,7 @@ import serverEditRoute from './routes/pterodactyl/EditServer.js';
 import resetPasswordRoute from './routes/pterodactyl/resetPassword.js';
 import dashboardRoutes from './routes/api/Dashboard.js';
 import leaderboardRoutes from './routes/api/Leaderboard.js';
+import teamRoutes from './routes/api/Teams.js';
 
 import { syncEggs } from './utils/syncEggs.js';
 import { syncLocations } from './utils/syncLocations.js';
@@ -52,6 +53,7 @@ app.use('/api/servers', serverEditRoute);
 app.use('/api/admin', adminRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
+app.use('/api/teams', teamRoutes);
 app.use('/api/user', resetPasswordRoute); // ✅ Password reset
 
 // ✅ Authenticated user info
