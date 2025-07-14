@@ -16,9 +16,14 @@ export function getAccountAgeDays(discordId) {
 
 export async function isVpn(ip) {
   if (!ip) return false;
+  let cleanIp = ip;
+  if (cleanIp.startsWith('::ffff:')) {
+    cleanIp = cleanIp.substring(7);
+  }
+
   try {
     const { data } = await axios.get(
-      `http://ip-api.com/json/${ip}?fields=status,proxy,hosting`
+      `http://ip-api.com/json/${cleanIp}?fields=status,proxy,hosting`
     );
     return data.status === 'success' && (data.proxy || data.hosting);
   } catch (err) {
