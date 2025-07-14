@@ -30,7 +30,12 @@ passport.use(new DiscordStrategy({
     const email = profile.email;
     const username = profile.username;
 
-    const ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.ip;
+    const ip =
+      req.headers['cf-connecting-ip'] ||
+      req.headers['x-real-ip'] ||
+      (req.headers['x-forwarded-for'] || '').split(',')[0] ||
+      req.ip;
+    console.log('Auth IP:', ip);
 
     if (await isVpn(ip)) {
       return done(null, false, { message: 'VPN or proxy detected' });

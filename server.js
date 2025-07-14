@@ -29,6 +29,7 @@ try {
 }
 
 const app = express();
+app.set('trust proxy', true); // respect X-Forwarded-* headers
 app.use(express.json());
 
 // Use session secret from config.yml!

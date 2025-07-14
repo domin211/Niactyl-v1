@@ -17,10 +17,12 @@ export function getAccountAgeDays(discordId) {
 export async function isVpn(ip) {
   if (!ip) return false;
   try {
-    const { data } = await axios.get(
-      `http://ip-api.com/json/${ip}?fields=status,proxy,hosting`
-    );
-    return data.status === 'success' && (data.proxy || data.hosting);
+    const apiKey = process.env.PROXYCHECK_API_KEY || '';
+    const url = `https://proxycheck.io/v2/${ip}?vpn=1${apiKey ? `&key=${apiKey}` : ''}`;
+    const { data } = await axios.get(url);
+    if (data.status !== 'ok') return false;
+    const record = data[ip];
+    return record && record.proxy === 'yes';
   } catch (err) {
     console.error('VPN check failed:', err.message);
     return false;
