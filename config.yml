@@ -22,6 +22,7 @@ plans:
       ports: 1
       backups: 0
       databases: 0
+    is24_7: false
     eggs: [1]
   basic:
     price: 50
@@ -32,6 +33,7 @@ plans:
       ports: 1
       backups: 1
       databases: 1
+    is24_7: true
     eggs: [1,2,3]
 
 database:

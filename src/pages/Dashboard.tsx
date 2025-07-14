@@ -94,7 +94,7 @@ const Dashboard: React.FC = () => {
 
         {/* Action Card */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-          <ActionCard title="Create Server" desc="Ready to host? You can create a server here." to="/servers/create" label="Create Server" />
+          <ActionCard title="Create Server" desc="Ready to host? You can create a server here." to="/servers/plans" label="Create Server" />
         </div>
 
         {/* Server Table */}
