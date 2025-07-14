@@ -45,21 +45,30 @@ export async function isBlacklisted({ discordId, ip }) {
 
 export async function isAltAccount(discordId, ip) {
   if (!discordId || !ip) return false;
-  const record = await prisma.loginIp.findFirst({ where: { ip } });
-  return record && record.discord_id !== discordId;
+  try {
+    const record = await prisma.loginIp.findFirst({ where: { ip } });
+    return record && record.discord_id !== discordId;
+  } catch (err) {
+    console.error('Failed to check alt account:', err);
+    return false;
+  }
 }
 
 export async function recordLoginIp(discordId, ip) {
   if (!discordId || !ip) return;
-  const existing = await prisma.loginIp.findFirst({ where: { ip } });
-  if (existing) {
-    if (existing.discord_id === discordId) {
-      await prisma.loginIp.update({
-        where: { id: existing.id },
-        data: { last_used: new Date() },
-      });
+  try {
+    const existing = await prisma.loginIp.findFirst({ where: { ip } });
+    if (existing) {
+      if (existing.discord_id === discordId) {
+        await prisma.loginIp.update({
+          where: { id: existing.id },
+          data: { last_used: new Date() },
+        });
+      }
+      return;
     }
-    return;
+    await prisma.loginIp.create({ data: { discord_id: discordId, ip } });
+  } catch (err) {
+    console.error('Failed to record login IP:', err);
   }
-  await prisma.loginIp.create({ data: { discord_id: discordId, ip } });
 }
