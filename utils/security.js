@@ -42,3 +42,24 @@ export async function isBlacklisted({ discordId, ip }) {
     },
   });
 }
+
+export async function isAltAccount(discordId, ip) {
+  if (!discordId || !ip) return false;
+  const record = await prisma.loginIp.findFirst({ where: { ip } });
+  return record && record.discord_id !== discordId;
+}
+
+export async function recordLoginIp(discordId, ip) {
+  if (!discordId || !ip) return;
+  const existing = await prisma.loginIp.findFirst({ where: { ip } });
+  if (existing) {
+    if (existing.discord_id === discordId) {
+      await prisma.loginIp.update({
+        where: { id: existing.id },
+        data: { last_used: new Date() },
+      });
+    }
+    return;
+  }
+  await prisma.loginIp.create({ data: { discord_id: discordId, ip } });
+}

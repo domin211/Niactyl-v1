@@ -9,7 +9,13 @@ import config from '../utils/config.js';
 import pteroApi from '../utils/pteroApi.js';
 import { getOrCreatePteroUser } from './pterodactyl/syncUsers.js';
 import { syncAllServers } from './pterodactyl/syncServers.js';
-import { getAccountAgeDays, isVpn, isBlacklisted } from '../utils/security.js';
+import {
+  getAccountAgeDays,
+  isVpn,
+  isBlacklisted,
+  isAltAccount,
+  recordLoginIp,
+} from '../utils/security.js';
 
 dotenv.config();
 
@@ -40,6 +46,10 @@ passport.use(new DiscordStrategy({
       return done(null, false, { message: 'User is blacklisted' });
     }
 
+    if (await isAltAccount(discordId, ip)) {
+      return done(null, false, { message: 'IP already used by another account' });
+    }
+
     if (getAccountAgeDays(discordId) < 7) {
       return done(null, false, { message: 'Account too new' });
     }
@@ -66,6 +76,8 @@ passport.use(new DiscordStrategy({
     console.log('🔁 Syncing all servers from Pterodactyl...');
     await syncAllServers();
     console.log('✅ Server sync complete.');
+
+    await recordLoginIp(discordId, ip);
 
     return done(null, { discord: profile, ptero: user });
   } catch (err) {
