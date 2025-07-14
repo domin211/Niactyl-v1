@@ -9,6 +9,7 @@ import config from '../utils/config.js';
 import pteroApi from '../utils/pteroApi.js';
 import { getOrCreatePteroUser } from './pterodactyl/syncUsers.js';
 import { syncAllServers } from './pterodactyl/syncServers.js';
+import { getAccountAgeDays, isVpn, isBlacklisted } from '../utils/security.js';
 
 dotenv.config();
 
@@ -22,11 +23,26 @@ passport.use(new DiscordStrategy({
   clientSecret: config.discord.clientSecret,
   callbackURL: config.discord.callbackUrl,
   scope: ['identify', 'email'],
-}, async (accessToken, refreshToken, profile, done) => {
+  passReqToCallback: true,
+}, async (req, accessToken, refreshToken, profile, done) => {
   try {
     const discordId = profile.id;
     const email = profile.email;
     const username = profile.username;
+
+    const ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.ip;
+
+    if (await isVpn(ip)) {
+      return done(null, false, { message: 'VPN or proxy detected' });
+    }
+
+    if (await isBlacklisted({ discordId, ip })) {
+      return done(null, false, { message: 'User is blacklisted' });
+    }
+
+    if (getAccountAgeDays(discordId) < 7) {
+      return done(null, false, { message: 'Account too new' });
+    }
 
     let user = await prisma.user.findUnique({ where: { discord_id: discordId } });
 
