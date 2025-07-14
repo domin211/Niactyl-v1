@@ -10,33 +10,29 @@ pterodactyl:
   adminApiKey: "ptla_OTgTmivmFmUapDTEDCxqp18OITg0EZhrKzZj31LT2WI"
   allowedNestId: 5
 
-linkvertise:
-  id: 1147997
-  reward_coins: 50
-  cooldown_hours: 1
-
-linkpays:
-  token: "4a243fb6ebb3de8d2ac9b2f880459154fa8d376d"
-  reward_coins: 50
-  cooldown_hours: 24
-
 renewalHours: 24
 
-renewalPricing:
-  cpu: 1        # per core
-  memory: 0.5   # per MB
-  disk: 0.2     # per MB
-  port: 2       # per port
-  backup: 2     # per backup
-  database: 2   # per database
-
-limits:
-  maxCpu: 1000
-  maxMemory: 16384
-  maxDisk: 10240
-  maxPorts: 69
-  maxBackups: 3
-  maxDatabases: 3
+plans:
+  free:
+    price: 0
+    resources:
+      cpu: 100
+      memory: 1024
+      disk: 5120
+      ports: 1
+      backups: 0
+      databases: 0
+    eggs: [1]
+  basic:
+    price: 50
+    resources:
+      cpu: 200
+      memory: 2048
+      disk: 10240
+      ports: 1
+      backups: 1
+      databases: 1
+    eggs: [1,2,3]
 
 database:
   host: 5.249.164.28

@@ -3,21 +3,28 @@ import { useNavigate } from 'react-router-dom';
 import { BRAND_COLOR } from '../config';
 import Alert from '../components/Alert';
 
+interface Plan {
+  price: number;
+  resources: {
+    cpu: number;
+    memory: number;
+    disk: number;
+    ports: number;
+    backups: number;
+    databases: number;
+  };
+  eggs: number[];
+}
+
 const CreateServer = () => {
   const [name, setName] = useState('');
-  const [cpu, setCpu] = useState(200);
-  const [memory, setMemory] = useState(1024);
-  const [disk, setDisk] = useState(5120);
-  const [ports, setPorts] = useState(1);
-  const [databases, setDatabases] = useState(0);
-  const [backups, setBackups] = useState(0);
+  const [plans, setPlans] = useState<Record<string, Plan>>({});
+  const [plan, setPlan] = useState('');
   const [egg, setEgg] = useState('');
   const [location, setLocation] = useState('');
   const [eggs, setEggs] = useState<any[]>([]);
   const [locations, setLocations] = useState<any[]>([]);
-  const [pricing, setPricing] = useState<any>({});
-  const [limits, setLimits] = useState<any>({});
-  const [cost, setCost] = useState(0);
+  const [eula, setEula] = useState(false);
   const [errorAlert, setErrorAlert] = useState<string | null>(null);
   const [successPopup, setSuccessPopup] = useState<string | null>(null);
 
@@ -27,29 +34,21 @@ const CreateServer = () => {
     fetch('/api/create-server/meta')
       .then(res => res.json())
       .then(data => {
-        const fetchedEggs = data.eggs || [];
-        const fetchedLocations = data.locations || [];
-        setEggs(fetchedEggs);
-        setLocations(fetchedLocations);
-        setPricing(data.pricing || {});
-        setLimits(data.limits || {});
-
-        // Set default egg and location to the first available
-        if (fetchedEggs.length > 0) setEgg(String(fetchedEggs[0].egg_id));
-        if (fetchedLocations.length > 0) setLocation(String(fetchedLocations[0].id));
+        setEggs(data.eggs || []);
+        setLocations(data.locations || []);
+        setPlans(data.plans || {});
+        const firstPlan = Object.keys(data.plans || {})[0];
+        if (firstPlan) setPlan(firstPlan);
       });
   }, []);
 
+  const filteredEggs = plans[plan]?.eggs || [];
+
   useEffect(() => {
-    const total =
-      cpu * (pricing.cpu || 0) +
-      memory * (pricing.memory || 0) +
-      disk * (pricing.disk || 0) +
-      ports * (pricing.port || 0) +
-      databases * (pricing.database || 0) +
-      backups * (pricing.backup || 0);
-    setCost(Math.round(total));
-  }, [cpu, memory, disk, ports, databases, backups, pricing]);
+    if (filteredEggs.length > 0) {
+      setEgg(String(filteredEggs[0]));
+    }
+  }, [plan, plans]);
 
   const handleCreate = async () => {
     setErrorAlert(null);
@@ -60,14 +59,10 @@ const CreateServer = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name,
-          cpu,
-          memory,
-          disk,
-          ports,
-          databases,
-          backups,
+          plan,
           egg: Number(egg),
           location,
+          eulaAccepted: eula,
         }),
       });
 
@@ -85,13 +80,6 @@ const CreateServer = () => {
     }
   };
 
-  const getSliderStyle = (value: number, min: number, max: number) => {
-    const percent = ((value - min) / (max - min)) * 100;
-    return {
-      background: `linear-gradient(to right, var(--brand-color) 0%, var(--brand-color) ${percent}%, #3B3F4A ${percent}%, #3B3F4A 100%)`,
-    };
-  };
-
   return (
     <>
       <link
@@ -107,13 +95,11 @@ const CreateServer = () => {
       )}
 
       <div className="min-h-screen bg-[#0C0E14] px-6 py-10 text-white" style={{ fontFamily: 'Rubik, sans-serif' }}>
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-xl mx-auto">
           <h1 className="text-4xl font-bold text-center mb-2" style={{ color: 'var(--brand-color)' }}>
             Create Server
           </h1>
-          <p className="text-center text-gray-400 mb-4 text-base">
-            Customize your server before launching it.
-          </p>
+          <p className="text-center text-gray-400 mb-4 text-base">Select a plan and create your server.</p>
 
           {errorAlert && <Alert type="error" message={errorAlert} />}
 
@@ -129,67 +115,16 @@ const CreateServer = () => {
               />
             </div>
 
-            <div className="space-y-6">
-              <label className="block text-sm text-gray-400">CPU: {cpu}%
-                <input
-                  type="range"
-                  min={100}
-                  max={limits.cpu || 2000}
-                  step={100}
-                  value={cpu}
-                  onChange={e => setCpu(+e.target.value)}
-                  className="w-full h-2 rounded-lg appearance-none"
-                  style={getSliderStyle(cpu, 100, limits.cpu || 2000)}
-                />
-              </label>
-              <label className="block text-sm text-gray-400">Memory: {memory} MB
-                <input
-                  type="range"
-                  min={512}
-                  max={limits.memory || 32768}
-                  step={512}
-                  value={memory}
-                  onChange={e => setMemory(+e.target.value)}
-                  className="w-full h-2 rounded-lg appearance-none"
-                  style={getSliderStyle(memory, 512, limits.memory || 32768)}
-                />
-              </label>
-              <label className="block text-sm text-gray-400">Disk: {disk} MB
-                <input
-                  type="range"
-                  min={1024}
-                  max={limits.disk || 51200}
-                  step={1024}
-                  value={disk}
-                  onChange={e => setDisk(+e.target.value)}
-                  className="w-full h-2 rounded-lg appearance-none"
-                  style={getSliderStyle(disk, 1024, limits.disk || 51200)}
-                />
-              </label>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label className="block mb-1 text-sm text-gray-400">Ports</label>
-                <select value={ports} onChange={e => setPorts(+e.target.value)}
-                  className="w-full bg-[#1E212B] text-white p-2 rounded-xl border border-transparent focus:border-[var(--brand-color)]">
-                  {[0, 1, 2, 3].map(v => <option key={v} value={v}>{v}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block mb-1 text-sm text-gray-400">Databases</label>
-                <select value={databases} onChange={e => setDatabases(+e.target.value)}
-                  className="w-full bg-[#1E212B] text-white p-2 rounded-xl border border-transparent focus:border-[var(--brand-color)]">
-                  {[0, 1, 2].map(v => <option key={v} value={v}>{v}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block mb-1 text-sm text-gray-400">Backups</label>
-                <select value={backups} onChange={e => setBackups(+e.target.value)}
-                  className="w-full bg-[#1E212B] text-white p-2 rounded-xl border border-transparent focus:border-[var(--brand-color)]">
-                  {[0, 1, 2].map(v => <option key={v} value={v}>{v}</option>)}
-                </select>
-              </div>
+            <div>
+              <label className="block mb-1 text-sm text-gray-400">Plan</label>
+              <select value={plan} onChange={e => setPlan(e.target.value)}
+                className="w-full bg-[#1E212B] text-white p-2 rounded-xl border border-transparent focus:border-[var(--brand-color)]">
+                {Object.entries(plans).map(([key, p]) => (
+                  <option key={key} value={key}>
+                    {key} - {p.price} tokens
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -197,7 +132,7 @@ const CreateServer = () => {
                 <label className="block mb-1 text-sm text-gray-400">Egg</label>
                 <select value={egg} onChange={e => setEgg(e.target.value)}
                   className="w-full bg-[#1E212B] text-white p-2 rounded-xl border border-transparent focus:border-[var(--brand-color)]">
-                  {eggs.map(e => (
+                  {eggs.filter(e => filteredEggs.includes(e.egg_id)).map(e => (
                     <option key={e.egg_id} value={e.egg_id}>{e.name}</option>
                   ))}
                 </select>
@@ -213,8 +148,9 @@ const CreateServer = () => {
               </div>
             </div>
 
-            <div className="text-lg text-center text-gray-300">
-              Estimated cost: <span className="text-white font-semibold">{cost}</span> coins / renewal
+            <div className="flex items-center gap-2">
+              <input type="checkbox" id="eula" checked={eula} onChange={e => setEula(e.target.checked)} />
+              <label htmlFor="eula" className="text-sm text-gray-300">I agree to the Minecraft EULA</label>
             </div>
 
             <button

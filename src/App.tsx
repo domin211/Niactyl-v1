@@ -11,7 +11,6 @@ const Profile = React.lazy(() => import('./pages/Profile'));
 const CreateServer = React.lazy(() => import('./pages/CreateServer'));
 const Admin = React.lazy(() => import('./pages/Admin'));
 const Leaderboard = React.lazy(() => import('./pages/Leaderboard'));
-const Earn = React.lazy(() => import('./pages/Earn'));
 const Team = React.lazy(() => import('./pages/Team'));
 
 // Global dashboard data context
@@ -121,19 +120,6 @@ function App() {
                 <Layout>
                   <Suspense fallback={null}>
                     <Leaderboard />
-                  </Suspense>
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/earn"
-            element={
-              <ProtectedRoute isAuthed={isAuthed}>
-                <Layout>
-                  <Suspense fallback={null}>
-                    <Earn />
                   </Suspense>
                 </Layout>
               </ProtectedRoute>

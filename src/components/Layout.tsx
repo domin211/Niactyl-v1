@@ -4,7 +4,6 @@ import {
   LayoutDashboard,
   Server,
   User,
-  Trophy,
   Users,
   PanelTop,
   Shield,
@@ -44,7 +43,6 @@ function Layout({ children }: { children: React.ReactNode }) {
       label: 'TEAMS',
       items: [
         { icon: Users, label: 'Team', link: '/team' },
-        { icon: Trophy, label: 'Earn', link: '/earn' },
         { icon: Users, label: 'Leaderboard', link: '/leaderboard' },
       ],
     },

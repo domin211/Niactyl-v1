@@ -31,15 +31,15 @@ router.get('/', async (req, res) => {
     const spending = servers.reduce((sum, srv) => sum + (srv.renewal_cost || 0), 0);
 
     let enoughTime = '∞';
-    if (user.coins && spending > 0) {
-      const minutes = Math.floor(user.coins / (spending / 1440));
+    if (user.tokens && spending > 0) {
+      const minutes = Math.floor(user.tokens / (spending / 1440));
       const hours = Math.floor(minutes / 60);
       const mins = minutes % 60;
       enoughTime = `${hours}h ${mins}m`;
     }
 
     res.json({
-      coins: user.coins,
+      tokens: user.tokens,
       spending,
       enoughTime,
       ptero_username: user.ptero_username, // Or whatever field is correct in your User model
