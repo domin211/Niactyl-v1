@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "version": "PTDL_v2"
+  },
+  "name": "Niactyl Panel",
+  "description": "Runs the Niactyl panel with automatic git updates",
+  "docker_images": {
+    "NodeJS 20": "ghcr.io/pterodactyl/yolks:nodejs_20"
+  },
+  "startup": "/bin/bash /mnt/server/entrypoint.sh",
+  "scripts": {
+    "installation": {
+      "script": "apt update && apt install -y git\ncd /mnt/server\nif [ ! -d .git ]; then git clone {{REPO_URL}} .; fi\nnpm install --omit=dev\nnpm run build > /dev/null 2>&1 || true",
+      "container": "ghcr.io/parkervcp/installers:alpine"
+    }
+  },
+  "variables": [
+    {
+      "name": "Git Repository URL",
+      "description": "Repository to clone for the panel",
+      "env_variable": "REPO_URL",
+      "default_value": "https://github.com/example/Niactyl-v1.git",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string"
+    },
+    {
+      "name": "Git Branch",
+      "description": "Branch to use when pulling updates",
+      "env_variable": "BRANCH",
+      "default_value": "main",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string"
+    }
+  ]
+}
