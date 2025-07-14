@@ -16,6 +16,10 @@ model User {
   is_admin       Boolean  @default(false)
   created_at     DateTime @default(now())
 
+  servers     Server[]
+  ownedTeams  Team[]      @relation("OwnedTeams")
+  teamMembers TeamMember[]
+
   @@map("users")
 }
 
@@ -34,6 +38,10 @@ model Server {
   plan         String?
   expires_at   DateTime?
   renewal_cost Int?
+  team_id     Int?
+
+  team        Team?     @relation(fields: [team_id], references: [id])
+  owner       User      @relation(fields: [user_id], references: [id])
 
   @@map("servers")
 }
@@ -54,4 +62,32 @@ model Location {
   name String
 
   @@map("locations")
+}
+
+model Team {
+  id         Int      @id @default(autoincrement())
+  name       String
+  type       String
+  owner_id   Int
+  created_at DateTime @default(now())
+
+  owner   User        @relation("OwnedTeams", fields: [owner_id], references: [id])
+  members TeamMember[]
+  servers Server[]
+
+  @@map("teams")
+}
+
+model TeamMember {
+  id        Int      @id @default(autoincrement())
+  team_id   Int
+  user_id   Int
+  can_edit  Boolean  @default(false)
+  joined_at DateTime @default(now())
+
+  team Team @relation(fields: [team_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
+
+  @@unique([team_id, user_id])
+  @@map("team_members")
 }
