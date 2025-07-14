@@ -98,3 +98,12 @@ model Blacklist {
   discord_id String? @unique
   ip         String? @unique
 }
+
+model LoginIp {
+  id         Int      @id @default(autoincrement())
+  discord_id String
+  ip         String   @unique
+  last_used  DateTime @default(now())
+
+  @@map("login_ips")
+}
