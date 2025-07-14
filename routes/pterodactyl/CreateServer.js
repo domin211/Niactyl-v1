@@ -39,7 +39,10 @@ router.get('/meta', async (req, res) => {
 });
 
 async function getEnvironmentVariables(egg_id) {
-  const egg = await prisma.egg.findUnique({ where: { egg_id } });
+  if (!egg_id || isNaN(Number(egg_id))) {
+    throw new Error('Invalid egg selected');
+  }
+  const egg = await prisma.egg.findUnique({ where: { egg_id: Number(egg_id) } });
   if (!egg) throw new Error('Invalid egg selected');
 
   let parsed;
@@ -92,6 +95,7 @@ router.post('/create', async (req, res) => {
   }
 
   try {
+    // Will throw if egg_id is missing or invalid
     const { egg, envVars } = await getEnvironmentVariables(egg_id);
 
     const payload = {

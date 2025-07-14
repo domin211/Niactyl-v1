@@ -34,8 +34,9 @@ const CreateServer = () => {
         setPricing(data.pricing || {});
         setLimits(data.limits || {});
 
-        if (fetchedEggs.length > 0) setEgg(fetchedEggs[0].id);
-        if (fetchedLocations.length > 0) setLocation(fetchedLocations[0].id);
+        // Set default egg and location to the first available
+        if (fetchedEggs.length > 0) setEgg(String(fetchedEggs[0].egg_id));
+        if (fetchedLocations.length > 0) setLocation(String(fetchedLocations[0].id));
       });
   }, []);
 
@@ -57,7 +58,17 @@ const CreateServer = () => {
       const res = await fetch('/api/create-server/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, cpu, memory, disk, ports, databases, backups, egg, location }),
+        body: JSON.stringify({
+          name,
+          cpu,
+          memory,
+          disk,
+          ports,
+          databases,
+          backups,
+          egg: Number(egg),
+          location,
+        }),
       });
 
       const data = await res.json();
@@ -187,7 +198,7 @@ const CreateServer = () => {
                 <select value={egg} onChange={e => setEgg(e.target.value)}
                   className="w-full bg-[#1E212B] text-white p-2 rounded-xl border border-transparent focus:border-[var(--brand-color)]">
                   {eggs.map(e => (
-                    <option key={e.id} value={e.id}>{e.name}</option>
+                    <option key={e.egg_id} value={e.egg_id}>{e.name}</option>
                   ))}
                 </select>
               </div>

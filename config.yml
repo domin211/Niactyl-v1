@@ -1,3 +1,5 @@
+sessionSecret: "change-this-to-a-very-random-string"
+
 discord:
   clientId: "1221092853531414660"
   clientSecret: "8zivFUfCMpvQQ0PWHw1tURSCeGJkvCFz"
@@ -37,8 +39,8 @@ limits:
   maxDatabases: 3
 
 database:
-  host: localhost
+  host: 5.249.164.28
   port: 5432
-  user: postgres
-  password: postgres
-  name: niactyl
+  user: pterodactyl
+  password: Pl3453Ch4n63M3!
+  name: niactylv1

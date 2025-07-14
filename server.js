@@ -1,10 +1,9 @@
 import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
-import dotenv from 'dotenv';
 import { execSync } from 'child_process';
 import prisma from './utils/db.js';
-import config from './utils/config.js';
+import config from './utils/config.js'; // Loads sessionSecret from YAML
 
 import './routes/auth.js'; // Initializes passport strategy
 
@@ -18,12 +17,9 @@ import serverEditRoute from './routes/pterodactyl/EditServer.js';
 import resetPasswordRoute from './routes/pterodactyl/resetPassword.js';
 import dashboardRoutes from './routes/api/Dashboard.js';
 import leaderboardRoutes from './routes/api/Leaderboard.js';
-import earnRoutes from './routes/api/earn.js';
 
 import { syncEggs } from './utils/syncEggs.js';
 import { syncLocations } from './utils/syncLocations.js';
-
-dotenv.config();
 
 // Automatically deploy Prisma schema on startup
 try {
@@ -35,9 +31,10 @@ try {
 const app = express();
 app.use(express.json());
 
+// Use session secret from config.yml!
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: config.sessionSecret,   // <-- Loaded from your YAML config
     resave: false,
     saveUninitialized: false,
   })
@@ -55,7 +52,6 @@ app.use('/api/servers', serverEditRoute);
 app.use('/api/admin', adminRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
-app.use('/api/earn', earnRoutes);
 app.use('/api/user', resetPasswordRoute); // ✅ Password reset
 
 // ✅ Authenticated user info

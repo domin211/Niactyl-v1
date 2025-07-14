@@ -5,17 +5,19 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const users = await prisma.user.findMany({
-      where: { NOT: { ptero_username: null } },
+    let users = await prisma.user.findMany({
       orderBy: { coins: 'desc' },
       take: 10,
       select: { ptero_username: true, coins: true },
     });
 
+    // Remove users where ptero_username is null, undefined, or empty string
+    users = users.filter(u => !!u.ptero_username);
+
     res.json(users);
   } catch (err) {
     console.error('Failed to fetch leaderboard:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json([]);
   }
 });
 

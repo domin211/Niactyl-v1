@@ -14,9 +14,18 @@ router.get('/', async (req, res) => {
 
     if (!user) return res.status(404).json({ error: 'User not found' });
 
+    // Use user.id if you've unified on Pterodactyl ID as the primary key
     const servers = await prisma.server.findMany({
-      where: { user_id: user.ptero_id },
-      select: { name: true, identifier: true, cpu: true, memory: true, disk: true, renewal_cost: true },
+      where: { user_id: user.id },
+      select: {
+        id: true,              // <-- Key fix: select id!
+        name: true,
+        identifier: true,
+        cpu: true,
+        memory: true,
+        disk: true,
+        renewal_cost: true,
+      },
     });
 
     const spending = servers.reduce((sum, srv) => sum + (srv.renewal_cost || 0), 0);
@@ -33,8 +42,8 @@ router.get('/', async (req, res) => {
       coins: user.coins,
       spending,
       enoughTime,
-      ptero_username: user.username, // ✅ for topbar and profile
-      is_admin: !!user.is_admin,     // ✅ for Layout/Admin routes
+      ptero_username: user.ptero_username, // Or whatever field is correct in your User model
+      is_admin: !!user.is_admin,
       discord: {
         id: req.user.discord.id,
         avatar: req.user.discord.avatar,

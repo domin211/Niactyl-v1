@@ -8,10 +8,9 @@ generator client {
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
+  id             Int      @id                   // Primary key, will match Pterodactyl user ID
   discord_id     String   @unique
   discord_email  String
-  ptero_id       String
   ptero_username String
   coins          Int      @default(0)
   is_admin       Boolean  @default(false)
@@ -39,12 +38,12 @@ model Server {
 }
 
 model Egg {
-  egg_id      Int    @id
-  name        String
-  nest        String
+  egg_id       Int    @id
+  name         String
+  nest         String
   docker_image String?
-  startup     String?
-  environment String?
+  startup      String?
+  environment  String?
 
   @@map("eggs")
 }
@@ -55,4 +54,3 @@ model Location {
 
   @@map("locations")
 }
-

@@ -21,7 +21,7 @@ passport.use(new DiscordStrategy({
   clientID: config.discord.clientId,
   clientSecret: config.discord.clientSecret,
   callbackURL: config.discord.callbackUrl,
-  scope: ['identify', 'email'], // <--- Hardcoded scopes
+  scope: ['identify', 'email'],
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     const discordId = profile.id;
@@ -38,9 +38,9 @@ passport.use(new DiscordStrategy({
 
       user = await prisma.user.create({
         data: {
+          id: typeof pteroUser.id === 'string' ? parseInt(pteroUser.id, 10) : pteroUser.id, // Ensure type matches your Prisma model!
           discord_id: discordId,
           discord_email: email,
-          ptero_id: pteroUser.id,
           ptero_username: pteroUser.username,
           is_admin: isAdmin,
         }
@@ -48,7 +48,7 @@ passport.use(new DiscordStrategy({
     }
 
     console.log('🔁 Syncing all servers from Pterodactyl...');
-    await syncAllServers(); // ✅ Full server sync
+    await syncAllServers();
     console.log('✅ Server sync complete.');
 
     return done(null, { discord: profile, ptero: user });
