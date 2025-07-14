@@ -16,22 +16,15 @@ const api = axios.create({
   },
 });
 
-const getPrice = (key) => parseFloat(config.renewalPricing?.[key] || 0);
+const plans = config.plans || {};
+const freePlanKey = Object.keys(plans).find(key => plans[key].price === 0);
 
 // ✅ GET /meta — send all needed info to CreateServer page
 router.get('/meta', async (req, res) => {
   try {
     const eggs = await prisma.egg.findMany({ select: { egg_id: true, name: true } });
     const locations = await prisma.location.findMany({ select: { id: true, name: true } });
-
-    const pricing = config.renewalPricing || {};
-    const limits = config.serverLimits || {
-      cpu: 2000,
-      memory: 32768,
-      disk: 51200,
-    };
-
-    res.json({ eggs, locations, pricing, limits });
+    res.json({ eggs, locations, plans });
   } catch (err) {
     console.error('❌ Failed to fetch create-server meta:', err);
     res.status(500).json({ error: 'Failed to load server creation info' });
@@ -67,39 +60,40 @@ router.post('/create', async (req, res) => {
 
   const {
     name,
-    cpu,
-    memory,
-    disk,
-    ports,
-    databases,
-    backups,
+    plan: planName,
     egg: egg_id,
     location: location_id,
+    eulaAccepted,
   } = req.body;
 
   if (!name || typeof name !== 'string' || name.length < 3) {
     return res.status(400).json({ error: 'Server name is required and must be at least 3 characters.' });
   }
 
-  const cost = Math.round(
-    cpu * getPrice('cpu') +
-    memory * getPrice('memory') +
-    disk * getPrice('disk') +
-    ports * getPrice('port') +
-    databases * getPrice('database') +
-    backups * getPrice('backup')
-  );
+  if (!eulaAccepted) {
+    return res.status(400).json({ error: 'You must accept the Minecraft EULA.' });
+  }
 
-  if (user.coins < cost) {
-    return res.status(400).json({ error: 'Not enough coins' });
+  const selectedPlan = plans[planName];
+  if (!selectedPlan) return res.status(400).json({ error: 'Invalid plan selected' });
+
+  if (!selectedPlan.eggs.includes(Number(egg_id))) {
+    return res.status(400).json({ error: 'Egg not allowed for selected plan' });
+  }
+
+  let planToUse = selectedPlan;
+  let finalPlanName = planName;
+  if (user.tokens < selectedPlan.price && freePlanKey) {
+    planToUse = plans[freePlanKey];
+    finalPlanName = freePlanKey;
   }
 
   try {
-    // Will throw if egg_id is missing or invalid
     const { egg, envVars } = await getEnvironmentVariables(egg_id);
 
+    const { cpu, memory, disk, ports, backups, databases } = planToUse.resources;
     const payload = {
-      name: name.substring(0, 48), // Pterodactyl name limit
+      name: name.substring(0, 48),
       user: user.ptero_id,
       egg: egg_id,
       docker_image: egg.docker_image,
@@ -128,7 +122,7 @@ router.post('/create', async (req, res) => {
     const response = await api.post('/servers', payload);
     const server = response.data.attributes;
 
-    await prisma.user.update({ where: { id: user.id }, data: { coins: user.coins - cost } });
+    await prisma.user.update({ where: { id: user.id }, data: { tokens: { decrement: planToUse.price } } });
 
     await prisma.server.create({ data: {
       id: server.id,
@@ -142,8 +136,9 @@ router.post('/create', async (req, res) => {
       databases,
       backups,
       user_id: user.id,
+      plan: finalPlanName,
       expires_at: new Date(Date.now() + config.renewalHours * 3600000),
-      renewal_cost: cost,
+      renewal_cost: planToUse.price,
     }});
 
     res.json({ success: true, server });

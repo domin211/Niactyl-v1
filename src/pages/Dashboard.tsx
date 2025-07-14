@@ -70,7 +70,7 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const coins = useMemo(() => dashboardData?.coins || 0, [dashboardData]);
+  const tokens = useMemo(() => dashboardData?.tokens || 0, [dashboardData]);
   const spending = useMemo(() => dashboardData?.spending || 0, [dashboardData]);
   const interval = useMemo(() => dashboardData?.interval || 1, [dashboardData]);
   const enoughTime = useMemo(() => dashboardData?.enoughTime, [dashboardData]);
@@ -87,14 +87,13 @@ const Dashboard: React.FC = () => {
 
         {/* Stat Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-          <StatCard label="Total Coins" value={coins} />
-          <StatCard label="Coins Spending" value={spending === 0 ? '0' : `${spending} coins / ${interval}h`} />
-          <StatCard label="Enough Coins For" value={spending === 0 ? <InfinityIcon size={24} strokeWidth={2.5} /> : enoughTime} />
+          <StatCard label="Total Tokens" value={tokens} />
+          <StatCard label="Token Spending" value={spending === 0 ? '0' : `${spending} tokens / ${interval}h`} />
+          <StatCard label="Enough Tokens For" value={spending === 0 ? <InfinityIcon size={24} strokeWidth={2.5} /> : enoughTime} />
         </div>
 
-        {/* Action Cards */}
+        {/* Action Card */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-          <ActionCard title="Earn Coins" desc="If you need coins, you can earn them here." to="/earn" label="Earn Coins" />
           <ActionCard title="Create Server" desc="Ready to host? You can create a server here." to="/servers/create" label="Create Server" />
         </div>
 

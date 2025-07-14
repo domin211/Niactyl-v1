@@ -6,9 +6,9 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     let users = await prisma.user.findMany({
-      orderBy: { coins: 'desc' },
+      orderBy: { tokens: 'desc' },
       take: 10,
-      select: { ptero_username: true, coins: true },
+      select: { ptero_username: true, tokens: true },
     });
 
     // Remove users where ptero_username is null, undefined, or empty string

@@ -3,7 +3,7 @@ import { BRAND_COLOR } from '../config';
 
 interface LeaderboardEntry {
   ptero_username: string;
-  coins: number;
+  tokens: number;
 }
 
 const Leaderboard: React.FC = () => {
@@ -33,7 +33,7 @@ const Leaderboard: React.FC = () => {
           Leaderboard
         </h1>
         <p className="text-center text-gray-400 mb-8 text-base">
-          Top 10 users with the most coins.
+          Top 10 users with the most tokens.
         </p>
 
         <div className="max-w-3xl mx-auto bg-[#14171F] rounded-2xl shadow-lg p-6 overflow-x-auto">
@@ -42,7 +42,7 @@ const Leaderboard: React.FC = () => {
               <tr className="text-gray-400 border-b border-gray-700">
                 <th className="py-2 pr-4 w-10"></th>
                 <th className="py-2 px-4">Username</th>
-                <th className="py-2 px-4">Coins</th>
+                <th className="py-2 px-4">Tokens</th>
               </tr>
             </thead>
             <tbody>
@@ -50,7 +50,7 @@ const Leaderboard: React.FC = () => {
                 <tr key={index} className="border-b border-gray-800">
                   <td className="py-3 pr-4 font-semibold text-white">{index + 1}.</td>
                   <td className="px-4 text-white">{entry.ptero_username}</td>
-                  <td className="px-4 text-white">{entry.coins}</td>
+                  <td className="px-4 text-white">{entry.tokens}</td>
                 </tr>
               ))}
               {entries.length === 0 && (

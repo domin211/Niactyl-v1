@@ -2,35 +2,35 @@ import React, { useState } from 'react';
 
 const Admin = () => {
   const [discordId, setDiscordId] = useState('');
-  const [addCoins, setAddCoins] = useState(0);
-  const [setCoins, setSetCoins] = useState(0);
+  const [addTokens, setAddTokens] = useState(0);
+  const [setTokens, setSetTokens] = useState(0);
   const [message, setMessage] = useState<string | null>(null);
 
-  const handleAddCoins = async () => {
-    const res = await fetch('/api/admin/add-coins', {
+  const handleAddTokens = async () => {
+    const res = await fetch('/api/admin/add-tokens', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ discord_id: discordId, coins: Number(addCoins) })
+      body: JSON.stringify({ discord_id: discordId, tokens: Number(addTokens) })
     });
 
     const data = await res.json();
     if (res.ok) {
-      setMessage(`✅ Added ${addCoins} coins to user ${discordId}`);
+      setMessage(`✅ Added ${addTokens} tokens to user ${discordId}`);
     } else {
       setMessage(`❌ Error: ${data.error}`);
     }
   };
 
-  const handleSetCoins = async () => {
-    const res = await fetch('/api/admin/set-coins', {
+  const handleSetTokens = async () => {
+    const res = await fetch('/api/admin/set-tokens', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ discord_id: discordId, coins: Number(setCoins) })
+      body: JSON.stringify({ discord_id: discordId, tokens: Number(setTokens) })
     });
 
     const data = await res.json();
     if (res.ok) {
-      setMessage(`✅ Set coins of user ${discordId} to ${setCoins}`);
+      setMessage(`✅ Set tokens of user ${discordId} to ${setTokens}`);
     } else {
       setMessage(`❌ Error: ${data.error}`);
     }
@@ -42,9 +42,9 @@ const Admin = () => {
         <h1 className="text-4xl font-bold text-center mb-8 text-brand">Admin Panel</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {/* Add Coins Box */}
+          {/* Add Tokens Box */}
           <div className="bg-[var(--surface-color)] rounded-2xl p-6 shadow space-y-4">
-            <h2 className="text-xl font-semibold text-white mb-2">Add Coins</h2>
+            <h2 className="text-xl font-semibold text-white mb-2">Add Tokens</h2>
             <div>
               <label className="block text-sm text-muted mb-1">Discord ID</label>
               <input
@@ -55,22 +55,22 @@ const Admin = () => {
               />
             </div>
             <div>
-              <label className="block text-sm text-muted mb-1">Coins to Add</label>
+              <label className="block text-sm text-muted mb-1">Tokens to Add</label>
               <input
                 type="number"
-                value={addCoins}
-                onChange={(e) => setAddCoins(parseInt(e.target.value))}
+                value={addTokens}
+                onChange={(e) => setAddTokens(parseInt(e.target.value))}
                 className="w-full bg-[#2c2c2c] text-white p-2 rounded-lg border border-transparent focus:border-[var(--brand-color)]"
               />
             </div>
-            <button onClick={handleAddCoins} className="btn btn-brand w-full">
-              Add Coins
+            <button onClick={handleAddTokens} className="btn btn-brand w-full">
+              Add Tokens
             </button>
           </div>
 
-          {/* Set Coins Box */}
+          {/* Set Tokens Box */}
           <div className="bg-[var(--surface-color)] rounded-2xl p-6 shadow space-y-4">
-            <h2 className="text-xl font-semibold text-white mb-2">Set Coins</h2>
+            <h2 className="text-xl font-semibold text-white mb-2">Set Tokens</h2>
             <div>
               <label className="block text-sm text-muted mb-1">Discord ID</label>
               <input
@@ -81,16 +81,16 @@ const Admin = () => {
               />
             </div>
             <div>
-              <label className="block text-sm text-muted mb-1">New Coin Amount</label>
+              <label className="block text-sm text-muted mb-1">New Token Amount</label>
               <input
                 type="number"
-                value={setCoins}
-                onChange={(e) => setSetCoins(parseInt(e.target.value))}
+                value={setTokens}
+                onChange={(e) => setSetTokens(parseInt(e.target.value))}
                 className="w-full bg-[#2c2c2c] text-white p-2 rounded-lg border border-transparent focus:border-[var(--brand-color)]"
               />
             </div>
-            <button onClick={handleSetCoins} className="btn btn-warning w-full">
-              Set Coins
+            <button onClick={handleSetTokens} className="btn btn-warning w-full">
+              Set Tokens
             </button>
           </div>
         </div>

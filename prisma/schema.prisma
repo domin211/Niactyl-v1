@@ -12,7 +12,7 @@ model User {
   discord_id     String   @unique
   discord_email  String
   ptero_username String
-  coins          Int      @default(0)
+  tokens         Int      @default(0)
   is_admin       Boolean  @default(false)
   created_at     DateTime @default(now())
 
@@ -31,6 +31,7 @@ model Server {
   databases    Int?
   backups      Int?
   user_id      Int
+  plan         String?
   expires_at   DateTime?
   renewal_cost Int?
 
