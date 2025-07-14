@@ -38,9 +38,9 @@ router.post('/reset-password', async (req, res) => {
 
   try {
     const user = await prisma.user.findUnique({ where: { discord_id: req.user.discord.id } });
-    if (!user || !user.ptero_id) return res.status(404).json({ error: 'Pterodactyl user not found' });
+    if (!user) return res.status(404).json({ error: 'Pterodactyl user not found' });
 
-    const newPassword = await resetUserPassword(user.ptero_id);
+    const newPassword = await resetUserPassword(user.id);
     res.json({ newPassword });
   } catch (err) {
     console.error('❌ Failed to reset password:', err);

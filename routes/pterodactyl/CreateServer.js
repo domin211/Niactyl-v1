@@ -94,7 +94,7 @@ router.post('/create', async (req, res) => {
     const { cpu, memory, disk, ports, backups, databases } = planToUse.resources;
     const payload = {
       name: name.substring(0, 48),
-      user: user.ptero_id,
+      user: user.id,
       egg: egg_id,
       docker_image: egg.docker_image,
       startup: egg.startup,
