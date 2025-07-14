@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
 
-  const pteroId = req.user.ptero.ptero_id;
+  const pteroId = req.user.ptero.id;
   const servers = await prisma.server.findMany({ where: { user_id: pteroId } });
 
   res.json(servers);
