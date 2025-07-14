@@ -46,3 +46,10 @@ database:
 limits:
   maxServersPerUser: 3
   maxServersPerTeam: 10
+
+# Proxy/VPN detection via proxycheck.io
+proxycheck:
+  apiKeys:
+    - "YOUR_API_KEY_1"
+    - "YOUR_API_KEY_2"
+    # add more keys here
