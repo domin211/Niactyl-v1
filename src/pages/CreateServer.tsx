@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { BRAND_COLOR } from '../config';
 import Alert from '../components/Alert';
 
@@ -14,6 +14,7 @@ interface Plan {
     databases: number;
   };
   eggs: number[];
+  is24_7?: boolean;
 }
 
 const CreateServer = () => {
@@ -29,6 +30,7 @@ const CreateServer = () => {
   const [successPopup, setSuccessPopup] = useState<string | null>(null);
 
   const navigate = useNavigate();
+  const locationHook = useLocation();
 
   useEffect(() => {
     fetch('/api/create-server/meta')
@@ -37,10 +39,16 @@ const CreateServer = () => {
         setEggs(data.eggs || []);
         setLocations(data.locations || []);
         setPlans(data.plans || {});
-        const firstPlan = Object.keys(data.plans || {})[0];
-        if (firstPlan) setPlan(firstPlan);
+
+        const params = new URLSearchParams(locationHook.search);
+        const planParam = params.get('plan');
+        let initialPlan = planParam && data.plans[planParam] ? planParam : undefined;
+        if (!initialPlan) {
+          initialPlan = Object.keys(data.plans || {})[0];
+        }
+        if (initialPlan) setPlan(initialPlan);
       });
-  }, []);
+  }, [locationHook.search]);
 
   const filteredEggs = plans[plan]?.eggs || [];
 

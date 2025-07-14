@@ -9,6 +9,7 @@ const Login = React.lazy(() => import('./pages/Auth'));
 const Servers = React.lazy(() => import('./pages/Servers'));
 const Profile = React.lazy(() => import('./pages/Profile'));
 const CreateServer = React.lazy(() => import('./pages/CreateServer'));
+const ChoosePlan = React.lazy(() => import('./pages/ChoosePlan'));
 const Admin = React.lazy(() => import('./pages/Admin'));
 const Leaderboard = React.lazy(() => import('./pages/Leaderboard'));
 const Team = React.lazy(() => import('./pages/Team'));
@@ -81,6 +82,19 @@ function App() {
                 <Layout>
                   <Suspense fallback={null}>
                     <Servers />
+                  </Suspense>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/servers/plans"
+            element={
+              <ProtectedRoute isAuthed={isAuthed}>
+                <Layout>
+                  <Suspense fallback={null}>
+                    <ChoosePlan />
                   </Suspense>
                 </Layout>
               </ProtectedRoute>
