@@ -90,4 +90,4 @@ model TeamMember {
 
   @@unique([team_id, user_id])
   @@map("team_members")
-}
+
