@@ -1,16 +1,30 @@
 {
   "meta": {
     "version": "PTDL_v2"
+    "version": "PTDL_v2",
+    "update_url": null
   },
+  "exported_at": "2025-07-14T00:00:00+00:00",
   "name": "Niactyl Panel",
+  "author": "Niactyl",
   "description": "Runs the Niactyl panel with automatic git updates",
+  "features": null,
   "docker_images": {
     "NodeJS 20": "ghcr.io/pterodactyl/yolks:nodejs_20"
+    "Nodejs 20": "ghcr.io/pterodactyl/yolks:nodejs_20"
   },
+  "file_denylist": [],
   "startup": "/bin/bash /mnt/server/entrypoint.sh",
+  "config": {
+    "files": "{}",
+    "startup": "{\n    \"done\": [\n        \"Server started\"\n    ]\n}",
+    "logs": "{}",
+    "stop": "^C"
+  },
   "scripts": {
     "installation": {
       "script": "apt update && apt install -y git\ncd /mnt/server\nif [ ! -d .git ]; then git clone {{REPO_URL}} .; fi\nnpm install --omit=dev\nnpm run build > /dev/null 2>&1 || true",
+      "script": "apt update && apt install -y git\\ncd /mnt/server\\nif [ ! -d .git ]; then git clone {{REPO_URL}} .; fi\\nnpm install --omit=dev\\nnpm run build >/dev/null 2>&1 || true",
       "container": "ghcr.io/parkervcp/installers:alpine"
     }
   },
@@ -23,6 +37,8 @@
       "user_viewable": true,
       "user_editable": true,
       "rules": "required|string"
+      "rules": "required|string",
+      "field_type": "text"
     },
     {
       "name": "Git Branch",
@@ -32,6 +48,8 @@
       "user_viewable": true,
       "user_editable": true,
       "rules": "required|string"
+      "rules": "required|string",
+      "field_type": "text"
     }
   ]
 }
