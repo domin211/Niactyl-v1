@@ -55,3 +55,9 @@ model Location {
 
   @@map("locations")
 }
+
+model Blacklist {
+  id         Int     @id @default(autoincrement())
+  discord_id String? @unique
+  ip         String? @unique
+}
