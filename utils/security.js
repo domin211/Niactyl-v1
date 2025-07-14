@@ -1,6 +1,9 @@
 import axios from 'axios';
 import prisma from './db.js';
 
+const vpnCache = new Map();
+const VPN_CACHE_TTL = 172800000; // 2 days in ms
+
 const DISCORD_EPOCH = 1420070400000n;
 
 export function getAccountAgeDays(discordId) {
@@ -21,11 +24,21 @@ export async function isVpn(ip) {
     cleanIp = cleanIp.substring(7);
   }
 
+  const cached = vpnCache.get(cleanIp);
+  if (cached && cached.expiresAt > Date.now()) {
+    return cached.result;
+  }
+
   try {
     const { data } = await axios.get(
       `http://ip-api.com/json/${cleanIp}?fields=status,proxy,hosting`
     );
-    return data.status === 'success' && (data.proxy || data.hosting);
+    const isProxy = data.status === 'success' && (data.proxy || data.hosting);
+    vpnCache.set(cleanIp, {
+      result: isProxy,
+      expiresAt: Date.now() + VPN_CACHE_TTL,
+    });
+    return isProxy;
   } catch (err) {
     console.error('VPN check failed:', err.message);
     return false;
