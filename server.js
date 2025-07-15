@@ -88,5 +88,6 @@ app.get('/api/me', async (req, res) => {
   }
 })();
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+const PORT = process.env.PORT || config.server.port || 3000;
+const baseUrl = config.server.url?.replace(/\/$/, '') || `http://localhost:${PORT}`;
+app.listen(PORT, () => console.log(`🚀 Server running on ${baseUrl}`));
