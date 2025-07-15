@@ -94,7 +94,8 @@ router.get('/discord/callback',
     session: true,
   }),
   (req, res) => {
-    const redirectTo = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/dashboard`;
+    const frontend = process.env.FRONTEND_URL || config.frontend.url || 'http://localhost:5173';
+    const redirectTo = `${frontend.replace(/\/$/, '')}/dashboard`;
     res.redirect(redirectTo);
   }
 );
