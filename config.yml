@@ -57,6 +57,6 @@ limits:
 # Proxy/VPN detection via proxycheck.io
 proxycheck:
   apiKeys:
-    - "YOUR_API_KEY_1"
-    - "YOUR_API_KEY_2"
+    - "test"
+    - "test"
     # add more keys here
