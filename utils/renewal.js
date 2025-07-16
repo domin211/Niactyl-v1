@@ -16,6 +16,7 @@ export async function processRenewals() {
   });
 
   for (const server of servers) {
+    // Delete server if it's been expired for too long
     if (server.expires_at && now - server.expires_at >= deleteMs) {
       try {
         await pteroApi.delete(`/servers/${server.id}`);
@@ -29,6 +30,7 @@ export async function processRenewals() {
     const user = await prisma.user.findUnique({ where: { id: server.user_id } });
     if (!user) continue;
 
+    // If the user can pay, renew as usual
     if (user.tokens >= (server.renewal_cost || 0)) {
       if (server.renewal_cost) {
         await prisma.user.update({
@@ -44,6 +46,7 @@ export async function processRenewals() {
       continue;
     }
 
+    // If user can't pay and there's a free plan, downgrade to free and renew
     if (freePlanKey && server.plan !== freePlanKey) {
       const freePlan = plans[freePlanKey];
 
@@ -73,13 +76,14 @@ export async function processRenewals() {
           databases: freePlan.resources.databases,
           backups: freePlan.resources.backups,
           renewal_cost: freePlan.price,
-          expires_at: server.expires_at
+          expires_at: new Date(now.getTime() + renewalMs) // <-- renew for new period!
         }
       });
     } else {
+      // If no free plan, just renew expiration
       await prisma.server.update({
         where: { id: server.id },
-        data: { expires_at: server.expires_at }
+        data: { expires_at: new Date(now.getTime() + renewalMs) }
       });
     }
   }

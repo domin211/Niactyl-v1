@@ -17,11 +17,11 @@ pterodactyl:
   adminApiKey: "ptla_OTgTmivmFmUapDTEDCxqp18OITg0EZhrKzZj31LT2WI"
   allowedNestId: 5
 
-renewalHours: 24
+renewalHours: 0.001
 deleteInactiveDays: 7
 
 plans:
-  free:
+  Free Plan:
     price: 0
     resources:
       cpu: 100
@@ -31,8 +31,8 @@ plans:
       backups: 0
       databases: 0
     is24_7: false
-    eggs: [1]
-  basic:
+    eggs: [15]
+  Basic Plan:
     price: 50
     resources:
       cpu: 200
@@ -42,7 +42,29 @@ plans:
       backups: 1
       databases: 1
     is24_7: true
-    eggs: [1,2,3]
+    eggs: [15,2,3]
+  Advanced Plan:
+    price: 1
+    resources:
+      cpu: 2000
+      memory: 20480
+      disk: 10240
+      ports: 1
+      backups: 1
+      databases: 1
+    is24_7: true
+    eggs: [15,2,4]  
+  Performance Plan:
+    price: 69
+    resources:
+      cpu: 200
+      memory: 2048
+      disk: 102400
+      ports: 1
+      backups: 1
+      databases: 1
+    is24_7: true
+    eggs: [15,2,34]  
 
 database:
   host: 5.249.164.28

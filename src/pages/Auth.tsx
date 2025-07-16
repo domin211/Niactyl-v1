@@ -39,9 +39,10 @@ function Login() {
             {APP_NAME}
           </h2>
 
+          {/* Perfectly centered button */}
           <button
             onClick={() => (window.location.href = '/api/auth/discord')}
-            className="flex items-center justify-center gap-3 px-6 py-3 rounded-lg text-sm font-semibold transition hover:bg-[#1e1e1e] w-full"
+            className="flex items-center justify-center gap-3 px-6 py-3 rounded-lg text-sm font-semibold transition hover:bg-[#1e1e1e] mx-auto mt-6 mb-6"
             style={{
               backgroundColor: 'transparent',
               border: `2.5px solid ${DISCORD_COLOR}`,
@@ -56,7 +57,7 @@ function Login() {
             Login with Discord
           </button>
 
-          <p className="text-[#aaaaaa] text-xs mt-5 font-normal">
+          <p className="text-[#aaaaaa] text-xs font-normal">
             By continuing, you agree to our{' '}
             <a
               href={TOS_URL}
