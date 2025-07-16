@@ -18,6 +18,7 @@ pterodactyl:
   allowedNestId: 5
 
 renewalHours: 24
+deleteInactiveDays: 7
 
 plans:
   free:
