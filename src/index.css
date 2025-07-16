@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,19 +7,27 @@
 :root {
   --brand-color: #fc6b05;
   --brand-color-light: #ff8a3d;
-  --background-color: #0C0E14;
+  --background-color: #0c0e14;
   --background-color-dark: #090b11;
-  --surface-color: #14171F;
+  --surface-color: #14171f;
   --surface-color-light: #1a1d25;
-  --brand-gradient: linear-gradient(90deg, var(--brand-color) 0%, var(--brand-color-light) 100%);
-  --surface-gradient: linear-gradient(180deg, var(--surface-color) 0%, var(--surface-color-light) 100%);
-  --text-primary: #F7F7F7;
-  --text-secondary: #AAAAAA;
-  --danger-color: #D20A0A;
-  --warning-color: #FF9900;
+  --brand-gradient: linear-gradient(
+    90deg,
+    var(--brand-color) 0%,
+    var(--brand-color-light) 100%
+  );
+  --surface-gradient: linear-gradient(
+    180deg,
+    var(--surface-color) 0%,
+    var(--surface-color-light) 100%
+  );
+  --text-primary: #f7f7f7;
+  --text-secondary: #aaaaaa;
+  --danger-color: #d20a0a;
+  --warning-color: #ff9900;
   --muted-bg: #1b1b1b;
 
-  --font-family: 'Rubik', sans-serif;
+  --font-family: "Rubik", sans-serif;
 
   --font-size-base: 14px;
   --font-size-lg: 16px;
@@ -30,7 +38,10 @@
 /* Base Styles */
 body {
   @apply text-white;
-  background: linear-gradient(var(--background-color), var(--background-color-dark));
+  background: linear-gradient(
+    var(--background-color),
+    var(--background-color-dark)
+  );
   font-family: var(--font-family);
   font-size: var(--font-size-base);
 }
@@ -111,10 +122,9 @@ body {
   border-radius: 0.75rem;
   padding: 1.5rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: box-shadow 0.2s;
 }
 
 .card:hover {
-  transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
