@@ -13,7 +13,6 @@ const api = axios.create({
 
 export async function syncLocations() {
   try {
-    console.log('📦 Syncing locations...');
     const res = await api.get('/locations');
 
     const locations = res.data.data.map(loc => ({
@@ -23,8 +22,10 @@ export async function syncLocations() {
 
     await prisma.location.deleteMany();
     await prisma.location.createMany({ data: locations });
-    console.log(`✅ Synced ${locations.length} locations`);
+
+    return locations.length;
   } catch (err) {
     console.error('❌ Failed to sync locations:', err.response?.data || err.message);
+    throw err;
   }
 }

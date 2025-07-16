@@ -28,9 +28,9 @@ import { syncLocations } from './utils/syncLocations.js';
 
 // Automatically generate Prisma client and deploy schema on startup
 try {
-  execSync('npx prisma generate', { stdio: 'inherit' });
-  execSync('npx prisma db push', { stdio: 'inherit' });
-  console.log('✅ Prisma schema deployed');
+  execSync('npx prisma generate', { stdio: 'pipe' });
+  execSync('npx prisma db push', { stdio: 'pipe' });
+  console.log('✅ Prisma schema synced');
 } catch (err) {
   console.error('❌ Prisma deploy failed:', err);
 }
@@ -86,9 +86,10 @@ app.get('/api/me', async (req, res) => {
 // ✅ Sync eggs & locations on startup
 (async () => {
   try {
-    await syncLocations();
-    await syncEggs();
-    console.log('✅ Eggs and locations synced');
+    console.log('🔄 Syncing eggs and locations...');
+    const locationCount = await syncLocations();
+    const eggCount = await syncEggs();
+    console.log(`✅ Synced ${eggCount} eggs and ${locationCount} locations`);
   } catch (err) {
     console.error('❌ Error syncing eggs or locations:', err);
   }
