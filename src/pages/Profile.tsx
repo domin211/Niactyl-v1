@@ -103,7 +103,7 @@ const Profile: React.FC = () => {
         </div>
       )}
 
-      <div className="max-w-3xl mx-auto bg-[var(--surface-color)] rounded-3xl shadow-lg p-8 space-y-8">
+      <div className="max-w-3xl mx-auto card space-y-8">
         {loading || !user ? (
           <p className="text-muted text-center">Loading user settings...</p>
         ) : (
@@ -174,7 +174,7 @@ const Profile: React.FC = () => {
       {/* Confirm Modal */}
       {confirmOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-          <div className="bg-[var(--surface-color)] p-6 rounded-2xl w-full max-w-md shadow-xl text-white">
+          <div className="card w-full max-w-md text-white">
             <h2 className="text-2xl font-bold mb-3">Are you sure?</h2>
             <p className="text-sm text-muted mb-6">
               You are about to{' '}
@@ -182,18 +182,10 @@ const Profile: React.FC = () => {
               cannot be undone.
             </p>
             <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setConfirmOpen(false)}
-                className="px-4 py-2 rounded-md text-sm font-medium text-white"
-                style={{ backgroundColor: '#2e2e2e' }}
-              >
+              <button onClick={() => setConfirmOpen(false)} className="btn btn-muted">
                 Cancel
               </button>
-              <button
-                onClick={handleConfirmDelete}
-                className="px-4 py-2 rounded-md text-sm font-medium text-white"
-                style={{ backgroundColor: 'var(--danger-color)' }}
-              >
+              <button onClick={handleConfirmDelete} className="btn btn-danger">
                 Yes, Delete
               </button>
             </div>

@@ -65,7 +65,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
       <div className="flex min-h-screen bg-[#0C0E14] text-white select-none" style={{ fontFamily: 'Rubik, sans-serif' }}>
         {/* Sidebar */}
-        <aside className={`${collapsed ? 'w-16' : 'w-64'} bg-[#14171F] p-4 transition-all duration-300`}>
+        <aside className={`${collapsed ? 'w-16' : 'w-64'} p-4 transition-all duration-300`} style={{ background: 'var(--surface-gradient)' }}>
           <div className="mb-8 flex items-center justify-center text-2xl font-bold" style={{ color: 'var(--brand-color)' }}>
             {collapsed ? APP_NAME[0] : APP_NAME}
           </div>
@@ -84,7 +84,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                       href={item.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`flex ${collapsed ? 'justify-center' : 'justify-start'} items-center gap-3 px-3 py-2 rounded-md transition hover:bg-[#1a1d25]`}
+                      className={`flex ${collapsed ? 'justify-center' : 'justify-start'} items-center gap-3 px-3 py-2 rounded-md transition hover:bg-[var(--surface-color-light)]`}
                     >
                       <div className="w-5 h-5 flex items-center justify-center">
                         <item.icon size={20} style={{ color }} />
@@ -95,7 +95,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                     <Link
                       key={item.label}
                       to={item.link}
-                      className={`flex ${collapsed ? 'justify-center' : 'justify-start'} items-center gap-3 px-3 py-2 rounded-md transition hover:bg-[#1a1d25]`}
+                      className={`flex ${collapsed ? 'justify-center' : 'justify-start'} items-center gap-3 px-3 py-2 rounded-md transition hover:bg-[var(--surface-color-light)]`}
                     >
                       <div className="w-5 h-5 flex items-center justify-center">
                         <item.icon size={20} style={{ color }} />
@@ -111,7 +111,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col">
-          <header className="bg-[#14171F] p-4 flex items-center justify-between relative">
+          <header className="p-4 flex items-center justify-between relative" style={{ background: 'var(--surface-gradient)' }}>
             <Menu size={22} className="cursor-pointer" onClick={() => setCollapsed(!collapsed)} />
 
             {user?.discord?.username && (
@@ -131,7 +131,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                   <ChevronDown size={16} />
                 </button>
                 {dropdownOpen && (
-                  <div className="absolute right-0 top-full mt-1 bg-[#1a1d25] rounded-md shadow p-2 z-50 min-w-max">
+                  <div className="absolute right-0 top-full mt-1 rounded-md shadow p-2 z-50 min-w-max" style={{ background: 'var(--surface-gradient)' }}>
                     <button
                       onClick={handleLogout}
                       className="flex items-center gap-2 w-full px-3 py-2 text-sm text-white transition hover:text-[var(--brand-color)]"

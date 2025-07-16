@@ -25,7 +25,7 @@ function Login() {
       />
 
       <div className="min-h-screen bg-[#0C0E14] flex flex-col items-center justify-center px-4 font-[Inter]">
-        <div className="bg-[#14171F] rounded-xl p-10 w-full max-w-md text-center">
+        <div className="card text-center p-10 w-full max-w-md">
           <h1
             className="text-3xl font-bold text-[#F7F7F7] mb-1"
             style={{ fontFamily: 'Rubik, sans-serif' }}

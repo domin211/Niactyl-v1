@@ -111,7 +111,7 @@ const CreateServer = () => {
 
           {errorAlert && <Alert type="error" message={errorAlert} />}
 
-          <div className="bg-[#14171F] rounded-3xl shadow-lg p-8 space-y-8 mt-6">
+          <div className="card mt-6 space-y-8">
             <div>
               <label className="block text-sm text-gray-400 mb-1">Server Name</label>
               <input
@@ -161,11 +161,7 @@ const CreateServer = () => {
               <label htmlFor="eula" className="text-sm text-gray-300">I agree to the Minecraft EULA</label>
             </div>
 
-            <button
-              onClick={handleCreate}
-              className="w-full py-3 text-sm font-semibold rounded-xl text-white transition"
-              style={{ backgroundColor: BRAND_COLOR }}
-            >
+            <button onClick={handleCreate} className="btn btn-brand w-full py-3 text-sm font-semibold">
               Create Server
             </button>
           </div>

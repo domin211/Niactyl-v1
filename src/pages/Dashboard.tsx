@@ -98,7 +98,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Server Table */}
-        <div className="bg-[var(--surface-color)] rounded-lg p-6 shadow overflow-x-auto">
+        <div className="card overflow-x-auto">
           <h2 className="text-lg font-semibold text-white mb-4">Your Servers</h2>
           <table className="w-full text-sm min-w-[600px]">
             <thead>
@@ -153,17 +153,17 @@ const Dashboard: React.FC = () => {
         {/* Modal */}
         {confirmOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-            <div className="bg-[var(--surface-color)] p-6 rounded-2xl w-full max-w-md shadow-xl text-white">
+            <div className="card w-full max-w-md text-white">
               <h2 className="text-2xl font-bold mb-3">Are you sure?</h2>
               <p className="text-sm text-muted mb-6">
                 You are about to delete{' '}
                 <span className="font-semibold text-brand">"{confirmName}"</span>. This action cannot be undone.
               </p>
               <div className="flex justify-end gap-3">
-                <button onClick={() => setConfirmOpen(false)} className="px-4 py-2 rounded-md text-sm font-medium text-white" style={{ backgroundColor: '#2e2e2e' }}>
+                <button onClick={() => setConfirmOpen(false)} className="btn btn-muted">
                   Cancel
                 </button>
-                <button onClick={handleConfirmDelete} className="px-4 py-2 rounded-md text-sm font-medium text-white" style={{ backgroundColor: 'var(--danger-color)' }}>
+                <button onClick={handleConfirmDelete} className="btn btn-danger">
                   Yes, Delete
                 </button>
               </div>
@@ -176,18 +176,18 @@ const Dashboard: React.FC = () => {
 };
 
 const StatCard = ({ label, value }: { label: string; value: React.ReactNode }) => (
-  <div className="bg-[var(--surface-color)] rounded-lg p-6 shadow text-left">
+  <div className="card text-left">
     <h3 className="text-sm text-muted mb-1">{label}</h3>
     <p className="text-2xl font-bold text-white">{value}</p>
   </div>
 );
 
 const ActionCard = ({ title, desc, to, label }: { title: string; desc: string; to: string; label: string }) => (
-  <div className="bg-[var(--surface-color)] rounded-lg p-6 shadow text-left">
+  <div className="card text-left">
     <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
     <p className="text-sm text-muted mb-4">{desc}</p>
     <Link to={to}>
-      <button className="py-1.5 px-4 text-sm font-medium rounded-md text-white" style={{ backgroundColor: 'var(--brand-color)' }}>
+      <button className="btn btn-brand px-4 py-1.5 text-sm font-medium">
         {label}
       </button>
     </Link>

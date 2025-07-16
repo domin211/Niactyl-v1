@@ -46,7 +46,7 @@ const ChoosePlan: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
           {Object.entries(plans).map(([key, p]) => (
-            <div key={key} className="bg-[#14171F] p-6 rounded-2xl shadow space-y-3">
+            <div key={key} className="card space-y-3">
               <h2 className="text-xl font-semibold">{key}</h2>
               <p className="text-sm text-gray-400">{p.price} tokens</p>
               <div className="text-sm text-gray-300 space-y-1">
@@ -58,11 +58,7 @@ const ChoosePlan: React.FC = () => {
                 <p><strong>Backups:</strong> {p.resources.backups}</p>
                 <p><strong>24/7:</strong> {p.is24_7 ? 'Yes' : 'No'}</p>
               </div>
-              <button
-                onClick={() => selectPlan(key)}
-                className="w-full py-2 rounded-xl text-white"
-                style={{ backgroundColor: BRAND_COLOR }}
-              >
+              <button onClick={() => selectPlan(key)} className="btn btn-brand w-full">
                 Select
               </button>
             </div>

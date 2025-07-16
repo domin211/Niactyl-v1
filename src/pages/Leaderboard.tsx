@@ -36,7 +36,7 @@ const Leaderboard: React.FC = () => {
           Top 10 users with the most tokens.
         </p>
 
-        <div className="max-w-3xl mx-auto bg-[#14171F] rounded-2xl shadow-lg p-6 overflow-x-auto">
+        <div className="max-w-3xl mx-auto card overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="text-gray-400 border-b border-gray-700">
