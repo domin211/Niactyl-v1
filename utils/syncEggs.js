@@ -13,8 +13,6 @@ const api = axios.create({
 
 export async function syncEggs() {
   try {
-    console.log('🥚 Syncing eggs...');
-
     const allowedNestId = config.pterodactyl.allowedNestId;
     if (!allowedNestId) throw new Error('No allowedNestId set in config.yml');
 
@@ -39,8 +37,10 @@ export async function syncEggs() {
 
     await prisma.egg.deleteMany();
     await prisma.egg.createMany({ data: eggs });
-    console.log(`✅ Synced ${eggs.length} eggs with environment variables`);
+
+    return eggs.length;
   } catch (err) {
     console.error('❌ Failed to sync eggs:', err.response?.data || err.message);
+    throw err;
   }
 }

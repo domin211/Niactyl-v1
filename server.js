@@ -9,7 +9,8 @@ import config from './utils/config.js'; // Loads sessionSecret from YAML
 console.clear();
 console.log('🟢 Initializing Niactyl server...');
 
-import './routes/auth.js'; // Initializes passport strategy
+// Load Passport strategy
+import './routes/auth.js';
 
 // Route Imports
 import authRoutes from './routes/auth.js';
@@ -38,10 +39,10 @@ try {
 const app = express();
 app.use(express.json());
 
-// Use session secret from config.yml!
+// Use session secret from config.yml
 app.use(
   session({
-    secret: config.sessionSecret,   // <-- Loaded from your YAML config
+    secret: config.sessionSecret,
     resave: false,
     saveUninitialized: false,
   })
@@ -50,26 +51,29 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ✅ API Routes
+// ✅ Mount API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/servers', serverInfoRoutes);
-app.use('/api/create-server', serverCreateRoute); // ✅ Fixed mount path
+app.use('/api/create-server', serverCreateRoute);
 app.use('/api/servers', serverDeleteRoute);
 app.use('/api/servers', serverEditRoute);
 app.use('/api/admin', adminRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/teams', teamRoutes);
-app.use('/api/user', resetPasswordRoute); // ✅ Password reset
+app.use('/api/user', resetPasswordRoute);
 
-// ✅ Authenticated user info
+// ✅ Authenticated user info route
 app.get('/api/me', async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ error: 'Not authenticated' });
   }
 
   try {
-    const user = await prisma.user.findUnique({ where: { discord_id: req.user.discord.id } });
+    const user = await prisma.user.findUnique({
+      where: { discord_id: req.user.discord.id },
+    });
+
     if (!user) return res.status(404).json({ error: 'User not found' });
 
     res.json({
@@ -86,16 +90,19 @@ app.get('/api/me', async (req, res) => {
 // ✅ Sync eggs & locations on startup
 (async () => {
   try {
-    await syncLocations();
-    await syncEggs();
-    console.log('✅ Eggs and locations synced');
+    console.log('🔄 Syncing eggs and locations...');
+    const locationCount = await syncLocations();
+    const eggCount = await syncEggs();
+    console.log(`✅ Synced ${eggCount} eggs and ${locationCount} locations`);
   } catch (err) {
     console.error('❌ Error syncing eggs or locations:', err);
   }
 })();
 
+// ✅ Start server
 const PORT = process.env.PORT || config.server.port || 3000;
 const baseUrl = config.server.url?.replace(/\/$/, '') || `http://localhost:${PORT}`;
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on ${baseUrl}`);
   console.log('✅ Startup complete');
