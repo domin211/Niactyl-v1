@@ -48,7 +48,7 @@ database:
   port: 5432
   user: pterodactyl
   password: Pl3453Ch4n63M3!
-  name: niactylv1v
+  name: Niactyldb10
 
 limits:
   maxServersPerUser: 3
@@ -57,6 +57,5 @@ limits:
 # Proxy/VPN detection via proxycheck.io
 proxycheck:
   apiKeys:
-    - "test"
-    - "test"
+    - "q55915-345530-v6627t-3943w1"
     # add more keys here
