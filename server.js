@@ -19,6 +19,7 @@ import serverInfoRoutes from './routes/pterodactyl/serverInfo.js';
 import serverCreateRoute from './routes/pterodactyl/CreateServer.js';
 import serverDeleteRoute from './routes/pterodactyl/DeleteServer.js';
 import serverEditRoute from './routes/pterodactyl/EditServer.js';
+import editPlanRoute from './routes/pterodactyl/EditPlan.js';
 import resetPasswordRoute from './routes/pterodactyl/resetPassword.js';
 import dashboardRoutes from './routes/api/Dashboard.js';
 import leaderboardRoutes from './routes/api/Leaderboard.js';
@@ -26,6 +27,7 @@ import teamRoutes from './routes/api/Teams.js';
 
 import { syncEggs } from './utils/syncEggs.js';
 import { syncLocations } from './utils/syncLocations.js';
+import { startRenewalJob } from './utils/renewal.js';
 
 // Automatically generate Prisma client and deploy schema on startup
 try {
@@ -57,6 +59,7 @@ app.use('/api/servers', serverInfoRoutes);
 app.use('/api/create-server', serverCreateRoute);
 app.use('/api/servers', serverDeleteRoute);
 app.use('/api/servers', serverEditRoute);
+app.use('/api/servers', editPlanRoute);
 app.use('/api/admin', adminRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
@@ -98,6 +101,8 @@ app.get('/api/me', async (req, res) => {
     console.error('❌ Error syncing eggs or locations:', err);
   }
 })();
+
+startRenewalJob();
 
 // ✅ Start server
 const PORT = process.env.PORT || config.server.port || 3000;
