@@ -86,7 +86,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           />
         )}
         <aside
-          className={`fixed md:static top-0 left-0 h-full md:min-h-screen z-40 transform p-4 transition-transform duration-300 ${mobileOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 ${collapsed ? "md:w-16" : "md:w-64"} w-64`}
+          className={`fixed md:static top-0 left-0 h-screen md:min-h-screen overflow-y-auto z-40 transform p-4 transition-transform duration-300 ${mobileOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 ${collapsed ? "md:w-16" : "md:w-64"} w-64`}
           style={{ background: "var(--surface-color)" }}
         >
           <div
