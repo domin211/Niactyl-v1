@@ -43,7 +43,7 @@ const Admin = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Add Tokens Box */}
-          <div className="bg-[var(--surface-color)] rounded-2xl p-6 shadow space-y-4">
+          <div className="card space-y-4">
             <h2 className="text-xl font-semibold text-white mb-2">Add Tokens</h2>
             <div>
               <label className="block text-sm text-muted mb-1">Discord ID</label>
@@ -69,7 +69,7 @@ const Admin = () => {
           </div>
 
           {/* Set Tokens Box */}
-          <div className="bg-[var(--surface-color)] rounded-2xl p-6 shadow space-y-4">
+          <div className="card space-y-4">
             <h2 className="text-xl font-semibold text-white mb-2">Set Tokens</h2>
             <div>
               <label className="block text-sm text-muted mb-1">Discord ID</label>

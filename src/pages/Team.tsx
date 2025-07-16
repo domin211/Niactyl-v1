@@ -9,7 +9,7 @@ const Team: React.FC = () => {
           Manage your team and boost your earnings together.
         </p>
 
-        <div className="bg-[var(--surface-color)] rounded-2xl shadow-lg p-6 space-y-6">
+        <div className="card space-y-6">
           <p className="text-base text-muted">
             This is your team area. You can invite other users to join your team and earn tokens on your behalf.
             Team members will contribute to your total earnings through linked tasks.
