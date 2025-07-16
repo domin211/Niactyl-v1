@@ -16,11 +16,8 @@
     var(--brand-color) 0%,
     var(--brand-color-light) 100%
   );
-  --surface-gradient: linear-gradient(
-    180deg,
-    var(--surface-color) 0%,
-    var(--surface-color-light) 100%
-  );
+  /* Use a solid color for surfaces instead of a gradient */
+  --surface-gradient: var(--surface-color);
   --text-primary: #f7f7f7;
   --text-secondary: #aaaaaa;
   --danger-color: #d20a0a;
@@ -58,7 +55,8 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  /* Ensure the scrollbar background matches the app theme */
+  background: var(--background-color-dark);
 }
 
 /* Utility Classes */
