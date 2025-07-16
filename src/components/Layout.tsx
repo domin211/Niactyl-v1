@@ -86,8 +86,8 @@ function Layout({ children }: { children: React.ReactNode }) {
           />
         )}
         <aside
-          className={`fixed md:static top-0 left-0 h-full z-40 transform p-4 transition-transform duration-300 ${mobileOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 ${collapsed ? "md:w-16" : "md:w-64"} w-64`}
-          style={{ background: "var(--surface-gradient)" }}
+          className={`fixed md:static top-0 left-0 h-full md:min-h-screen z-40 transform p-4 transition-transform duration-300 ${mobileOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 ${collapsed ? "md:w-16" : "md:w-64"} w-64`}
+          style={{ background: "var(--surface-color)" }}
         >
           <div
             className="mb-8 flex items-center justify-center text-2xl font-bold"
@@ -157,7 +157,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         <div className="flex-1 flex flex-col">
           <header
             className="p-4 flex items-center justify-between relative"
-            style={{ background: "var(--surface-gradient)" }}
+            style={{ background: "var(--surface-color)" }}
           >
             <Menu
               size={22}
@@ -184,7 +184,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                 {dropdownOpen && (
                   <div
                     className="absolute right-0 top-full mt-1 rounded-md shadow p-2 z-50 min-w-max"
-                    style={{ background: "var(--surface-gradient)" }}
+                    style={{ background: "var(--surface-color)" }}
                   >
                     <button
                       onClick={handleLogout}
