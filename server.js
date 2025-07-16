@@ -5,6 +5,10 @@ import { execSync } from 'child_process';
 import prisma from './utils/db.js';
 import config from './utils/config.js'; // Loads sessionSecret from YAML
 
+// Clean startup output and show an initialization message
+console.clear();
+console.log('🟢 Initializing Niactyl server...');
+
 import './routes/auth.js'; // Initializes passport strategy
 
 // Route Imports
@@ -22,9 +26,11 @@ import teamRoutes from './routes/api/Teams.js';
 import { syncEggs } from './utils/syncEggs.js';
 import { syncLocations } from './utils/syncLocations.js';
 
-// Automatically deploy Prisma schema on startup
+// Automatically generate Prisma client and deploy schema on startup
 try {
-  execSync('npx prisma db push', { stdio: 'inherit' });
+  execSync('npx prisma generate', { stdio: 'pipe' });
+  execSync('npx prisma db push', { stdio: 'pipe' });
+  console.log('✅ Prisma schema synced');
 } catch (err) {
   console.error('❌ Prisma deploy failed:', err);
 }
@@ -80,9 +86,10 @@ app.get('/api/me', async (req, res) => {
 // ✅ Sync eggs & locations on startup
 (async () => {
   try {
-    await syncLocations();
-    await syncEggs();
-    console.log('✅ Eggs and locations synced');
+    console.log('🔄 Syncing eggs and locations...');
+    const locationCount = await syncLocations();
+    const eggCount = await syncEggs();
+    console.log(`✅ Synced ${eggCount} eggs and ${locationCount} locations`);
   } catch (err) {
     console.error('❌ Error syncing eggs or locations:', err);
   }
@@ -90,4 +97,7 @@ app.get('/api/me', async (req, res) => {
 
 const PORT = process.env.PORT || config.server.port || 3000;
 const baseUrl = config.server.url?.replace(/\/$/, '') || `http://localhost:${PORT}`;
-app.listen(PORT, () => console.log(`🚀 Server running on ${baseUrl}`));
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on ${baseUrl}`);
+  console.log('✅ Startup complete');
+});
