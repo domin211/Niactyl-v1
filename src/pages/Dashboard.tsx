@@ -110,7 +110,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Server Table */}
-        <div className="card overflow-x-auto rounded-3xl shadow-lg bg-[#191c24] border border-[#191c24] mb-10">
+        <div className="card overflow-x-auto rounded-3xl shadow-lg mb-10">
           <h2 className="text-lg font-semibold text-white mb-4">Your Servers</h2>
           <table className="w-full text-sm min-w-[600px]">
             <thead>
@@ -173,7 +173,7 @@ const Dashboard: React.FC = () => {
         {/* Modal */}
         {confirmOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-            <div className="card w-full max-w-md text-white rounded-3xl bg-[#191c24] border border-[#191c24] shadow-lg">
+            <div className="card w-full max-w-md text-white rounded-3xl">
               <h2 className="text-2xl font-bold mb-3">Are you sure?</h2>
               <p className="text-sm text-muted mb-6">
                 You are about to delete{' '}
@@ -205,7 +205,7 @@ const StatCard = ({
   value: React.ReactNode;
   icon?: React.ReactNode;
 }) => (
-  <div className="card text-left bg-[#191c24] rounded-3xl shadow-lg border border-[#191c24] p-6 flex flex-col gap-1">
+  <div className="card text-left rounded-3xl shadow-lg p-6 flex flex-col gap-1">
     <div className="flex items-center gap-2 mb-1 text-muted text-sm font-semibold">
       {icon && icon}
       {label}
@@ -225,7 +225,7 @@ const ActionCard = ({
   to: string;
   label: string;
 }) => (
-  <div className="card text-left bg-[#191c24] rounded-3xl shadow-lg border border-[#191c24] p-6 flex flex-col gap-2">
+  <div className="card text-left rounded-3xl shadow-lg p-6 flex flex-col gap-2">
     <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
     <p className="text-sm text-muted mb-4">{desc}</p>
     <Link to={to}>

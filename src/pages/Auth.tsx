@@ -19,11 +19,6 @@ function Login() {
 
   return (
     <>
-      {/* Fonts */}
-      <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Rubik:wght@500;700&display=swap"
-        rel="stylesheet"
-      />
       <style>{`
         :root {
           --brand-color: ${BRAND_COLOR};
@@ -31,18 +26,12 @@ function Login() {
         }
       `}</style>
 
-      <div className="min-h-screen bg-[#0C0E14] flex flex-col items-center justify-center px-4 font-[Inter]">
+      <div className="min-h-screen bg-[#0C0E14] flex flex-col items-center justify-center px-4">
         <div className="card text-center p-10 w-full max-w-md">
-          <h1
-            className="text-3xl font-bold text-[#F7F7F7] mb-1"
-            style={{ fontFamily: 'Rubik, sans-serif' }}
-          >
+          <h1 className="text-3xl font-bold text-[#F7F7F7] mb-1">
             Welcome to
           </h1>
-          <h2
-            className="text-4xl font-extrabold mb-6"
-            style={{ fontFamily: 'Rubik, sans-serif', color: BRAND_COLOR }}
-          >
+          <h2 className="text-4xl font-extrabold mb-6" style={{ color: BRAND_COLOR }}>
             {APP_NAME}
           </h2>
 

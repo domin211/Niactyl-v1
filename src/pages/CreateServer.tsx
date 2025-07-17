@@ -90,18 +90,13 @@ const CreateServer = () => {
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&display=swap"
-        rel="stylesheet"
-      />
-
       {successPopup && (
         <div className="fixed top-6 right-6 z-50">
           <Alert type="success" message={successPopup} />
         </div>
       )}
 
-      <div className="min-h-screen bg-[#0C0E14] px-6 py-10 text-white" style={{ fontFamily: 'Rubik, sans-serif' }}>
+      <div className="min-h-screen bg-[#0C0E14] px-6 py-10 text-white">
         <div className="max-w-xl mx-auto">
           <h1 className="text-4xl font-bold text-center mb-2" style={{ color: 'var(--brand-color)' }}>
             Create Server
@@ -117,15 +112,17 @@ const CreateServer = () => {
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                className="w-full bg-[#1E212B] text-white p-3 rounded-xl border border-transparent focus:border-[var(--brand-color)]"
+                className="input"
                 placeholder="My awesome server"
               />
             </div>
 
             <div>
               <label className="block mb-1 text-sm text-gray-400">Plan</label>
-              <select value={plan} onChange={e => setPlan(e.target.value)}
-                className="w-full bg-[#1E212B] text-white p-2 rounded-xl border border-transparent focus:border-[var(--brand-color)]">
+              <select
+                value={plan}
+                onChange={e => setPlan(e.target.value)}
+                className="input">
                 {Object.entries(plans).map(([key, p]) => (
                   <option key={key} value={key}>
                     {key} - {p.price} tokens
@@ -137,8 +134,10 @@ const CreateServer = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1 text-sm text-gray-400">Egg</label>
-                <select value={egg} onChange={e => setEgg(e.target.value)}
-                  className="w-full bg-[#1E212B] text-white p-2 rounded-xl border border-transparent focus:border-[var(--brand-color)]">
+                <select
+                  value={egg}
+                  onChange={e => setEgg(e.target.value)}
+                  className="input">
                   {eggs.filter(e => filteredEggs.includes(e.egg_id)).map(e => (
                     <option key={e.egg_id} value={e.egg_id}>{e.name}</option>
                   ))}
@@ -146,8 +145,10 @@ const CreateServer = () => {
               </div>
               <div>
                 <label className="block mb-1 text-sm text-gray-400">Location</label>
-                <select value={location} onChange={e => setLocation(e.target.value)}
-                  className="w-full bg-[#1E212B] text-white p-2 rounded-xl border border-transparent focus:border-[var(--brand-color)]">
+                <select
+                  value={location}
+                  onChange={e => setLocation(e.target.value)}
+                  className="input">
                   {locations.map(l => (
                     <option key={l.id} value={l.id}>{l.name}</option>
                   ))}

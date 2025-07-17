@@ -55,8 +55,7 @@ const ChoosePlan: React.FC = () => {
         {Object.entries(plans).map(([key, p]) => (
           <div
             key={key}
-            className={`relative bg-[#191c24] rounded-3xl shadow-lg transition-all duration-200
-            p-8 flex flex-col gap-6 border-2 border-[#191c24] hover:border-orange-400 hover:scale-[1.03]`}
+            className={`card relative rounded-3xl shadow-lg transition-all duration-200 p-8 flex flex-col gap-6 border-2 hover:border-orange-400 hover:scale-[1.03]`}
           >
             <div className="flex items-center justify-between mb-1">
               <h2 className="text-2xl font-extrabold text-white">{key}</h2>

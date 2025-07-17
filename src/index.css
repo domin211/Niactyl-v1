@@ -114,6 +114,11 @@ body {
   filter: brightness(1.1);
 }
 
+/* Form input fields */
+.input {
+  @apply w-full bg-[#1E212B] text-white p-3 rounded-xl border border-transparent focus:border-[var(--brand-color)] outline-none;
+}
+
 /* Card component */
 .card {
   background: var(--surface-gradient);
