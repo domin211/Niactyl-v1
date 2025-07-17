@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { APP_NAME, BRAND_COLOR, PANEL_URL } from "../config";
+import { lightenColor } from "../utils/color";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
@@ -72,7 +73,12 @@ function Layout({ children }: { children: React.ReactNode }) {
         href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&display=swap"
         rel="stylesheet"
       />
-      <style>{`:root { --brand-color: ${BRAND_COLOR}; }`}</style>
+      <style>{`
+        :root {
+          --brand-color: ${BRAND_COLOR};
+          --brand-color-light: ${lightenColor(BRAND_COLOR, 20)};
+        }
+      `}</style>
 
       <div
         className="flex flex-col md:flex-row min-h-screen bg-[#0C0E14] text-white select-none"
