@@ -8,8 +8,8 @@ frontend:
   url: "http://localhost:5173"
 
 discord:
-  clientId: "1221092853531414660"
-  clientSecret: "8zivFUfCMpvQQ0PWHw1tURSCeGJkvCFz"
+  clientId: "1071540568766812341"
+  clientSecret: "jwRt-8Du5hgnB5-sHYyo3AruKSreSsfN"
   callbackUrl: "http://localhost:3000/api/auth/discord/callback"
 
 pterodactyl:

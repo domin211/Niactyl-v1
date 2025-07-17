@@ -1,7 +1,15 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Infinity as InfinityIcon } from 'lucide-react';
+import {
+  Infinity as InfinityIcon,
+  Coins,
+  Cpu,
+  MemoryStick,
+  HardDrive
+} from 'lucide-react';
 import { PANEL_URL } from '../config';
+
+const iconColor = "#fc6b05";
 
 const Dashboard: React.FC = () => {
   const [dashboardData, setDashboardData] = useState<any>(null);
@@ -80,16 +88,20 @@ const Dashboard: React.FC = () => {
   if (loading && showFallback) return <p className="text-white p-6">Loading...</p>;
 
   return (
-    <div className="min-h-screen bg-[var(--background-color)] p-6 text-white">
+    <div className="min-h-screen bg-[#0C0E14] p-6 text-white">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold text-center mb-2 text-brand">Dashboard</h1>
         <p className="text-center text-muted mb-8 text-base">View your resources & other things here.</p>
 
         {/* Stat Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-          <StatCard label="Total Tokens" value={tokens} />
-          <StatCard label="Token Spending" value={spending === 0 ? '0' : `${spending} tokens / ${interval}h`} />
-          <StatCard label="Enough Tokens For" value={spending === 0 ? <InfinityIcon size={24} strokeWidth={2.5} /> : enoughTime} />
+          <StatCard label="Total Tokens" value={tokens} icon={<Coins size={26} color={iconColor} />} />
+          <StatCard label="Token Spending" value={spending === 0 ? '0' : `${spending} tokens / ${interval}h`} icon={<Coins size={24} color={iconColor} />} />
+          <StatCard
+            label="Enough Tokens For"
+            value={spending === 0 ? <InfinityIcon size={24} strokeWidth={2.5} color={iconColor} /> : enoughTime}
+            icon={<InfinityIcon size={24} color={iconColor} />}
+          />
         </div>
 
         {/* Action Card */}
@@ -98,15 +110,23 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Server Table */}
-        <div className="card overflow-x-auto">
+        <div className="card overflow-x-auto rounded-3xl shadow-lg bg-[#191c24] border border-[#191c24] mb-10">
           <h2 className="text-lg font-semibold text-white mb-4">Your Servers</h2>
           <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="text-left text-muted border-b border-gray-700">
-                <th className="py-2 pr-4">Name</th>
-                <th className="px-4">CPU</th>
-                <th className="px-4">RAM</th>
-                <th className="px-4">Disk</th>
+                <th className="py-2 pr-4">
+                  Name
+                </th>
+                <th className="px-4">
+                  <div className="flex items-center gap-1"><Cpu size={16} color={iconColor} /> CPU</div>
+                </th>
+                <th className="px-4">
+                  <div className="flex items-center gap-1"><MemoryStick size={16} color={iconColor} /> RAM</div>
+                </th>
+                <th className="px-4">
+                  <div className="flex items-center gap-1"><HardDrive size={16} color={iconColor} /> Disk</div>
+                </th>
                 <th className="text-center px-4">Actions</th>
               </tr>
             </thead>
@@ -153,7 +173,7 @@ const Dashboard: React.FC = () => {
         {/* Modal */}
         {confirmOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-            <div className="card w-full max-w-md text-white">
+            <div className="card w-full max-w-md text-white rounded-3xl bg-[#191c24] border border-[#191c24] shadow-lg">
               <h2 className="text-2xl font-bold mb-3">Are you sure?</h2>
               <p className="text-sm text-muted mb-6">
                 You are about to delete{' '}
@@ -175,19 +195,41 @@ const Dashboard: React.FC = () => {
   );
 };
 
-const StatCard = ({ label, value }: { label: string; value: React.ReactNode }) => (
-  <div className="card text-left">
-    <h3 className="text-sm text-muted mb-1">{label}</h3>
+// Add icon prop for resource cards
+const StatCard = ({
+  label,
+  value,
+  icon,
+}: {
+  label: string;
+  value: React.ReactNode;
+  icon?: React.ReactNode;
+}) => (
+  <div className="card text-left bg-[#191c24] rounded-3xl shadow-lg border border-[#191c24] p-6 flex flex-col gap-1">
+    <div className="flex items-center gap-2 mb-1 text-muted text-sm font-semibold">
+      {icon && icon}
+      {label}
+    </div>
     <p className="text-2xl font-bold text-white">{value}</p>
   </div>
 );
 
-const ActionCard = ({ title, desc, to, label }: { title: string; desc: string; to: string; label: string }) => (
-  <div className="card text-left">
+const ActionCard = ({
+  title,
+  desc,
+  to,
+  label,
+}: {
+  title: string;
+  desc: string;
+  to: string;
+  label: string;
+}) => (
+  <div className="card text-left bg-[#191c24] rounded-3xl shadow-lg border border-[#191c24] p-6 flex flex-col gap-2">
     <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
     <p className="text-sm text-muted mb-4">{desc}</p>
     <Link to={to}>
-      <button className="btn btn-brand px-4 py-1.5 text-sm font-medium">
+      <button className="btn btn-brand px-4 py-1.5 text-sm font-medium rounded-xl">
         {label}
       </button>
     </Link>
