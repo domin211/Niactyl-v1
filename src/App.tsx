@@ -13,6 +13,7 @@ const ChoosePlan = React.lazy(() => import('./pages/ChoosePlan'));
 const Admin = React.lazy(() => import('./pages/Admin'));
 const Leaderboard = React.lazy(() => import('./pages/Leaderboard'));
 const Team = React.lazy(() => import('./pages/Team'));
+const EditServer = React.lazy(() => import('./pages/EditServer'));
 
 // Global dashboard data context
 export const AppContext = createContext<any>(null);
@@ -108,6 +109,19 @@ function App() {
                 <Layout>
                   <Suspense fallback={null}>
                     <CreateServer />
+                  </Suspense>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/servers/edit/:id"
+            element={
+              <ProtectedRoute isAuthed={isAuthed}>
+                <Layout>
+                  <Suspense fallback={null}>
+                    <EditServer />
                   </Suspense>
                 </Layout>
               </ProtectedRoute>
