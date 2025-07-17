@@ -25,6 +25,8 @@ interface Server {
   ports: any[];
   databases: any[];
   backups: any[];
+  expires_at?: string;
+  plan?: string;
 }
 
 const Servers: React.FC = () => {
@@ -34,12 +36,19 @@ const Servers: React.FC = () => {
   const [confirmName, setConfirmName] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertType, setAlertType] = useState<'success' | 'error'>('success');
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
     fetch('/api/servers', { credentials: 'include' })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to load');
+        return res.json();
+      })
       .then(data => setServers(data))
-      .catch(err => console.error('Failed to load servers:', err));
+      .catch(err => {
+        console.error('Failed to load servers:', err);
+        setLoadError('Failed to load servers.');
+      });
   }, []);
 
   const confirmDelete = (id: number, name: string) => {
@@ -91,6 +100,10 @@ const Servers: React.FC = () => {
         <p className="text-center text-gray-400 mb-8 text-base">
           View and manage all the servers you've created.
         </p>
+        {loadError && <Alert type="error" message={loadError} />}
+        <p className="text-center text-sm text-gray-400 mb-6">
+          Ensure you have enough tokens when your server renews or it will be downgraded to the free plan.
+        </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-6xl mx-auto">
           {servers.map(server => (
@@ -129,6 +142,14 @@ const Servers: React.FC = () => {
                   <Save size={18} color={iconColor} />
                   <span><strong>Backups:</strong> {server.backups?.length || 0}</span>
                 </div>
+                {server.expires_at && (
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-orange-400">Renews:</span>
+                    <span>
+                      {new Date(server.expires_at).toLocaleString()}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="flex flex-wrap gap-3 mt-6">
