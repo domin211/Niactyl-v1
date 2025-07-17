@@ -54,15 +54,16 @@ const EditServer: React.FC = () => {
 
   return (
     <>
-      <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&display=swap" rel="stylesheet" />
-      <div className="min-h-screen bg-[#0C0E14] px-6 py-10 text-white" style={{ fontFamily: 'Rubik, sans-serif' }}>
+      <div className="min-h-screen bg-[#0C0E14] px-6 py-10 text-white">
         <h1 className="text-3xl font-bold mb-6" style={{ color: 'var(--brand-color)' }}>Edit Plan</h1>
         {alert && <Alert type={alert.type} message={alert.msg} />}
         <div className="card space-y-6 max-w-md">
           <div>
             <label className="block mb-1 text-sm text-gray-400">Plan</label>
-            <select value={serverPlan} onChange={e => setServerPlan(e.target.value)}
-              className="w-full bg-[#1E212B] text-white p-2 rounded-xl border border-transparent focus:border-[var(--brand-color)]">
+            <select
+              value={serverPlan}
+              onChange={e => setServerPlan(e.target.value)}
+              className="input">
               {Object.entries(plans).map(([key]) => (
                 <option key={key} value={key}>{key}</option>
               ))}

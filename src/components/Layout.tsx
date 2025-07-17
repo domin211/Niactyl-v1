@@ -69,10 +69,6 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&display=swap"
-        rel="stylesheet"
-      />
       <style>{`
         :root {
           --brand-color: ${BRAND_COLOR};
@@ -82,7 +78,6 @@ function Layout({ children }: { children: React.ReactNode }) {
 
       <div
         className="flex flex-col md:flex-row min-h-screen bg-[#0C0E14] text-white select-none"
-        style={{ fontFamily: "Rubik, sans-serif" }}
       >
         {/* Sidebar */}
         {mobileOpen && (

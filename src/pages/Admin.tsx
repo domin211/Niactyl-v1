@@ -51,7 +51,7 @@ const Admin = () => {
                 type="text"
                 value={discordId}
                 onChange={(e) => setDiscordId(e.target.value)}
-                className="w-full bg-[#2c2c2c] text-white p-2 rounded-lg border border-transparent focus:border-[var(--brand-color)]"
+                className="input"
               />
             </div>
             <div>
@@ -60,7 +60,7 @@ const Admin = () => {
                 type="number"
                 value={addTokens}
                 onChange={(e) => setAddTokens(parseInt(e.target.value))}
-                className="w-full bg-[#2c2c2c] text-white p-2 rounded-lg border border-transparent focus:border-[var(--brand-color)]"
+                className="input"
               />
             </div>
             <button onClick={handleAddTokens} className="btn btn-brand w-full">
@@ -77,7 +77,7 @@ const Admin = () => {
                 type="text"
                 value={discordId}
                 onChange={(e) => setDiscordId(e.target.value)}
-                className="w-full bg-[#2c2c2c] text-white p-2 rounded-lg border border-transparent focus:border-[var(--brand-color)]"
+                className="input"
               />
             </div>
             <div>
@@ -86,7 +86,7 @@ const Admin = () => {
                 type="number"
                 value={setTokens}
                 onChange={(e) => setSetTokens(parseInt(e.target.value))}
-                className="w-full bg-[#2c2c2c] text-white p-2 rounded-lg border border-transparent focus:border-[var(--brand-color)]"
+                className="input"
               />
             </div>
             <button onClick={handleSetTokens} className="btn btn-warning w-full">
