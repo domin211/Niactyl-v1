@@ -5,6 +5,7 @@ import config from './config.js';
 const plans = config.plans || {};
 const freePlanKey = Object.keys(plans).find(key => plans[key].price === 0);
 const renewalMs = (config.renewalHours || 24) * 3600000;
+const deleteMs = (config.deleteInactiveDays || 7) * 86400000;
 
 export async function processRenewals() {
   const now = new Date();
@@ -15,9 +16,21 @@ export async function processRenewals() {
   });
 
   for (const server of servers) {
+    // Delete server if it's been expired for too long
+    if (server.expires_at && now - server.expires_at >= deleteMs) {
+      try {
+        await pteroApi.delete(`/servers/${server.id}`);
+      } catch (err) {
+        console.error('❌ Failed to delete inactive server:', err.response?.data || err.message);
+      }
+      await prisma.server.delete({ where: { id: server.id } });
+      continue;
+    }
+
     const user = await prisma.user.findUnique({ where: { id: server.user_id } });
     if (!user) continue;
 
+    // If the user can pay, renew as usual
     if (user.tokens >= (server.renewal_cost || 0)) {
       if (server.renewal_cost) {
         await prisma.user.update({
@@ -33,6 +46,7 @@ export async function processRenewals() {
       continue;
     }
 
+    // If user can't pay and there's a free plan, downgrade to free and renew
     if (freePlanKey && server.plan !== freePlanKey) {
       const freePlan = plans[freePlanKey];
 
@@ -62,10 +76,11 @@ export async function processRenewals() {
           databases: freePlan.resources.databases,
           backups: freePlan.resources.backups,
           renewal_cost: freePlan.price,
-          expires_at: new Date(now.getTime() + renewalMs)
+          expires_at: new Date(now.getTime() + renewalMs) // <-- renew for new period!
         }
       });
     } else {
+      // If no free plan, just renew expiration
       await prisma.server.update({
         where: { id: server.id },
         data: { expires_at: new Date(now.getTime() + renewalMs) }

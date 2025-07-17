@@ -94,12 +94,12 @@ router.post('/create', async (req, res) => {
     return res.status(400).json({ error: 'Egg not allowed for selected plan' });
   }
 
-  let planToUse = selectedPlan;
-  let finalPlanName = planName;
-  if (user.tokens < selectedPlan.price && freePlanKey) {
-    planToUse = plans[freePlanKey];
-    finalPlanName = freePlanKey;
+  if (user.tokens < selectedPlan.price) {
+    return res.status(400).json({ error: 'Insufficient tokens for selected plan' });
   }
+
+  const planToUse = selectedPlan;
+  const finalPlanName = planName;
 
   try {
     const { egg, envVars } = await getEnvironmentVariables(egg_id);
