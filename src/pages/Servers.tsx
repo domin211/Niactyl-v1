@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  Cpu,
+  MemoryStick,
+  HardDrive,
+  Server as ServerIcon,
+  Database,
+  Save,
+  Network
+} from 'lucide-react';
 import { BRAND_COLOR } from '../config';
 import Alert from '../components/Alert';
+
+const iconColor = "#fc6b05";
 
 interface Server {
   id: number;
@@ -60,7 +71,7 @@ const Servers: React.FC = () => {
       setAlertMessage(`❌ Failed to delete server: ${data.error}`);
     }
 
-    setTimeout(() => setAlertMessage(''), 3000); // Clear alert after 3s
+    setTimeout(() => setAlertMessage(''), 3000);
   };
 
   return (
@@ -83,21 +94,44 @@ const Servers: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-6xl mx-auto">
           {servers.map(server => (
-            <div key={server.id} className="card">
-              <h2 className="text-xl font-semibold text-white mb-2">{server.name}</h2>
+            <div
+              key={server.id}
+              className="bg-[#191c24] rounded-3xl shadow-lg border-2 border-[#191c24] hover:border-orange-400 transition-all duration-200 p-8 flex flex-col mb-2"
+            >
+              <h2 className="text-xl font-semibold text-white mb-2 flex items-center gap-2">
+                <ServerIcon size={22} color={iconColor} /> {server.name}
+              </h2>
               <p className="text-sm text-gray-400 mb-4">
                 Server ID: <span className="text-[var(--brand-color)]">{server.identifier}</span>
               </p>
-              <div className="space-y-1 text-sm text-gray-300">
-                <p><strong>CPU:</strong> {server.cpu}%</p>
-                <p><strong>RAM:</strong> {server.memory} MB</p>
-                <p><strong>Disk:</strong> {server.disk} MB</p>
-                <p><strong>Ports:</strong> {server.ports?.length || 0}</p>
-                <p><strong>Databases:</strong> {server.databases?.length || 0}</p>
-                <p><strong>Backups:</strong> {server.backups?.length || 0}</p>
+              <div className="space-y-2 text-sm text-gray-300">
+                <div className="flex items-center gap-2">
+                  <Cpu size={18} color={iconColor} />
+                  <span><strong>CPU:</strong> {server.cpu}%</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MemoryStick size={18} color={iconColor} />
+                  <span><strong>RAM:</strong> {server.memory} MB</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <HardDrive size={18} color={iconColor} />
+                  <span><strong>Disk:</strong> {server.disk} MB</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Network size={18} color={iconColor} />
+                  <span><strong>Ports:</strong> {server.ports?.length || 0}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Database size={18} color={iconColor} />
+                  <span><strong>Databases:</strong> {server.databases?.length || 0}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Save size={18} color={iconColor} />
+                  <span><strong>Backups:</strong> {server.backups?.length || 0}</span>
+                </div>
               </div>
 
-              <div className="flex flex-wrap gap-3 mt-5">
+              <div className="flex flex-wrap gap-3 mt-6">
                 <a
                   href={`https://panel.firecone.eu/server/${server.identifier}`}
                   target="_blank"
@@ -121,7 +155,7 @@ const Servers: React.FC = () => {
 
         {confirmOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-            <div className="card w-full max-w-md text-white">
+            <div className="card w-full max-w-md text-white rounded-3xl bg-[#191c24] border border-[#191c24] shadow-lg">
               <h2 className="text-2xl font-bold mb-3 text-white">Are you sure?</h2>
               <p className="text-sm text-gray-300 mb-6">
                 You are about to delete{' '}
