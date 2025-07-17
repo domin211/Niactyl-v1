@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { APP_NAME, BRAND_COLOR, TOS_URL, DISCORD_COLOR } from '../config';
+import { lightenColor } from '../utils/color';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -23,6 +24,12 @@ function Login() {
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Rubik:wght@500;700&display=swap"
         rel="stylesheet"
       />
+      <style>{`
+        :root {
+          --brand-color: ${BRAND_COLOR};
+          --brand-color-light: ${lightenColor(BRAND_COLOR, 20)};
+        }
+      `}</style>
 
       <div className="min-h-screen bg-[#0C0E14] flex flex-col items-center justify-center px-4 font-[Inter]">
         <div className="card text-center p-10 w-full max-w-md">

@@ -22,11 +22,6 @@ const Leaderboard: React.FC = () => {
         href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&display=swap"
         rel="stylesheet"
       />
-      <style>{`
-        :root {
-          --brand-color: ${BRAND_COLOR};
-        }
-      `}</style>
 
       <div className="min-h-screen bg-[#0C0E14] px-6 py-10 text-white" style={{ fontFamily: 'Rubik, sans-serif' }}>
         <h1 className="text-4xl font-bold text-center mb-2" style={{ color: 'var(--brand-color)' }}>

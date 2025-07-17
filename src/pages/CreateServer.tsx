@@ -94,7 +94,6 @@ const CreateServer = () => {
         href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&display=swap"
         rel="stylesheet"
       />
-      <style>{`:root { --brand-color: ${BRAND_COLOR}; }`}</style>
 
       {successPopup && (
         <div className="fixed top-6 right-6 z-50">
