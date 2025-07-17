@@ -55,7 +55,7 @@ const EditServer: React.FC = () => {
   return (
     <>
       <div className="min-h-screen bg-[#0C0E14] px-6 py-10 text-white">
-        <h1 className="text-3xl font-bold mb-6" style={{ color: 'var(--brand-color)' }}>Edit Plan</h1>
+        <h1 className="text-3xl font-bold mb-6 text-brand">Edit Plan</h1>
         {alert && <Alert type={alert.type} message={alert.msg} />}
         <div className="card space-y-6 max-w-md">
           <div>

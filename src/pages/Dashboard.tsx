@@ -144,17 +144,16 @@ const Dashboard: React.FC = () => {
                           href={`${PANEL_URL}/server/${server.identifier}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-3 py-1 rounded text-white text-xs font-medium"
-                          style={{ backgroundColor: 'var(--brand-color)' }}
+                          className="btn btn-brand px-3 py-1 text-xs"
                         >
                           Open
                         </a>
                         <Link to={`/servers/edit/${server.id}`}>
-                          <button className="px-3 py-1 rounded text-white text-xs font-medium" style={{ backgroundColor: 'var(--warning-color)' }}>
+                          <button className="btn btn-warning px-3 py-1 text-xs">
                             Edit
                           </button>
                         </Link>
-                        <button onClick={() => confirmDelete(server.id, server.name)} className="px-3 py-1 rounded text-white text-xs font-medium" style={{ backgroundColor: 'var(--danger-color)' }}>
+                        <button onClick={() => confirmDelete(server.id, server.name)} className="btn btn-danger px-3 py-1 text-xs">
                           Delete
                         </button>
                       </div>

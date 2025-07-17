@@ -19,7 +19,7 @@ const Leaderboard: React.FC = () => {
   return (
     <>
       <div className="min-h-screen bg-[#0C0E14] px-6 py-10 text-white">
-        <h1 className="text-4xl font-bold text-center mb-2" style={{ color: 'var(--brand-color)' }}>
+        <h1 className="text-4xl font-bold text-center mb-2 text-brand">
           Leaderboard
         </h1>
         <p className="text-center text-gray-400 mb-8 text-base">
