@@ -114,6 +114,23 @@ body {
   filter: brightness(1.1);
 }
 
+/* Discord login button */
+.btn-discord {
+  background-color: transparent;
+  color: var(--discord-color, #5865F2);
+  border: 2px solid var(--discord-color, #5865F2);
+}
+
+.btn-discord:hover {
+  filter: brightness(1.1);
+  background-color: #1e1e1e;
+}
+
+/* Form input fields */
+.input {
+  @apply w-full bg-[#1E212B] text-white p-3 rounded-xl border border-transparent focus:border-[var(--brand-color)] outline-none;
+}
+
 /* Card component */
 .card {
   background: var(--surface-gradient);

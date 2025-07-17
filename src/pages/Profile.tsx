@@ -134,27 +134,15 @@ const Profile: React.FC = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <button
-                onClick={resetPassword}
-                className="flex-1 py-2 px-4 rounded-xl text-sm font-medium text-white"
-                style={{ backgroundColor: 'var(--brand-color)' }}
-              >
+              <button onClick={resetPassword} className="btn btn-brand flex-1">
                 Reset Password
               </button>
 
-              <button
-                onClick={refreshData}
-                className="flex-1 py-2 px-4 rounded-xl text-sm font-medium text-white"
-                style={{ backgroundColor: '#282B33' }}
-              >
+              <button onClick={refreshData} className="btn btn-muted flex-1">
                 Refresh Data
               </button>
 
-              <button
-                onClick={() => setConfirmOpen(true)}
-                className="flex-1 py-2 px-4 rounded-xl text-sm font-medium text-white"
-                style={{ backgroundColor: 'var(--danger-color)' }}
-              >
+              <button onClick={() => setConfirmOpen(true)} className="btn btn-danger flex-1">
                 Delete Account
               </button>
             </div>

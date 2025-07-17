@@ -85,15 +85,10 @@ const Servers: React.FC = () => {
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&display=swap"
-        rel="stylesheet"
-      />
-
-      <div className="min-h-screen bg-[#0C0E14] px-6 py-10 text-white" style={{ fontFamily: 'Rubik, sans-serif' }}>
+      <div className="min-h-screen bg-[#0C0E14] px-6 py-10 text-white">
         {alertMessage && <Alert type={alertType} message={alertMessage} />}
 
-        <h1 className="text-4xl font-bold text-center mb-2" style={{ color: 'var(--brand-color)' }}>
+        <h1 className="text-4xl font-bold text-center mb-2 text-brand">
           Your Servers
         </h1>
         <p className="text-center text-gray-400 mb-8 text-base">
@@ -108,7 +103,7 @@ const Servers: React.FC = () => {
           {servers.map(server => (
             <div
               key={server.id}
-              className="bg-[#191c24] rounded-3xl shadow-lg border-2 border-[#191c24] hover:border-orange-400 transition-all duration-200 p-8 flex flex-col mb-2"
+              className="card rounded-3xl border-2 hover:border-orange-400 transition-all duration-200 p-8 flex flex-col mb-2"
             >
               <h2 className="text-xl font-semibold text-white mb-2 flex items-center gap-2">
                 <ServerIcon size={22} color={iconColor} /> {server.name}
@@ -175,7 +170,7 @@ const Servers: React.FC = () => {
 
         {confirmOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-            <div className="card w-full max-w-md text-white rounded-3xl bg-[#191c24] border border-[#191c24] shadow-lg">
+            <div className="card w-full max-w-md text-white rounded-3xl">
               <h2 className="text-2xl font-bold mb-3 text-white">Are you sure?</h2>
               <p className="text-sm text-gray-300 mb-6">
                 You are about to delete{' '}
